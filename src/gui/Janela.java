@@ -6,6 +6,7 @@ import gui.util.Style;
 
 
 public class Janela extends JFrame {
+	Menu menu = new Menu();
 	
 	public Janela (){
 		this.setTitle("Home");
@@ -16,11 +17,14 @@ public class Janela extends JFrame {
 		this.getContentPane().setBackground(Style.bg);
 		this.setLocationRelativeTo(null);
 		
-		this.add(new Menu(), Style.border.NORTH);
+		setMenu();
+		
 	}
 	
 	private void setMenu(){
-		//this.add(menu, Style.border.NORTH);
+		menu.menu_bar(this);
+	
+		this.add(menu, Style.border.NORTH);
 		this.validate();
 	}
 }
