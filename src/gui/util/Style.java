@@ -15,6 +15,7 @@ public class Style {
 	public static Font consolas_16 = new Font("Consolas", Font.PLAIN, 16);
 	public static Font tf_font2 = new Font("Sans Serif", Font.BOLD, 16);
 	public static Font ft = new Font("Arial Black", Font.PLAIN, 16);
+	public static Font menu_font = new Font("Arial", Font.PLAIN, 14);
 	
 	public static Color bg = new Color(0xdddddb); // Linux backgroung = 0x2c2c2c
 	public static Color fg = new Color(0x3e455f);	// Orange linux foreground
