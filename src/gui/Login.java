@@ -18,7 +18,9 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
+import gui.Janela;
 
 public class Login extends JFrame implements MouseListener, KeyListener{
 	JPanel conteiner, header, cadastro, nome_panel, senha_panel, submit_panel;
@@ -55,7 +57,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		placeholder[1] = "Sua senha";
 	
 	
-		this.setTitle("Tela de cadastro");
+		this.setTitle("Login");
 		this.setSize(1050, 550);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
@@ -173,8 +175,28 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		cadastro.setBackground(new Color(0xf2701a));
 	}
 	
+	int tentativas = 3;	
 	private void login(String nome, String senha){
 		
+		if(nome.equals("Admin") && senha.equals("admin")){
+			this.dispose();
+			new Janela();
+		}
+		else {
+			if(tentativas != 0)
+				tentativas--;
+			
+			if (nome.equals(placeholder[0]) || senha.equals(placeholder[1])){
+				JOptionPane.showMessageDialog(null, "Por favor, preencher todos os campos\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "Credeenciais erradas\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+			}
+			
+			if(tentativas == 0){
+				login_button.setEnabled(false);
+			}
+		}
 	}
 	
 	//MouseListener Interface implementation
