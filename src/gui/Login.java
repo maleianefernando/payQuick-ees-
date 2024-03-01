@@ -37,6 +37,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 	
 	Font tf_font = new Font("Sans Serif", Font.PLAIN, 16);	//text field font
 	Font consolas_16 = new Font("Consolas", Font.PLAIN, 16);
+	Font tf_font2 = new Font("Sans Serif", Font.BOLD, 16);
 	
 	Color bg = new Color(0xdddddb); // Linux backgroung = 0x2c2c2c
 	Color fg = new Color(0x3e455f);	// Orange linux foreground
@@ -104,7 +105,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		
 		nome_panel = new JPanel(flow_2);
 		nome_panel.setBackground(bg);
-		//nome_panel.add(nome_label);
+		nome_panel.add(nome_label);
 		nome_panel.add(nome_tf);
 		
 		cadastro.add(nome_panel);
@@ -126,7 +127,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		
 		senha_panel = new JPanel(flow_2);
 		senha_panel.setBackground(bg);
-		//senha_panel.add(senha_label);
+		senha_panel.add(senha_label);
 		senha_panel.add(senha_tf);
 		
 		cadastro.add(senha_panel);
@@ -149,7 +150,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		cadastro.add(submit_panel);
 		
 		ImageIcon img = new ImageIcon("./img/__tr.jpg");
-		JLabel img_label = new JLabel("Faca Login e desfrute dos servicos");
+		JLabel img_label = new JLabel("Faca Login e torne-se um revoltado");
 		img_label.setBackground(new Color(0x3960a1));
 		img_label.setForeground(new Color(0xf2701a));
 		img_label.setFont(new Font("Arial", Font.BOLD, 24));
@@ -183,12 +184,14 @@ public class Login extends JFrame implements MouseListener, KeyListener{
         if (e.getSource().equals(nome_tf)){
 			if(nome_tf.getText().equals(placeholder[0])){
 				nome_tf.setText("");
+				nome_tf.setFont(tf_font2);
 			}
         }
         
         if(e.getSource().equals(senha_tf)){
         	if(senha_tf.getText().equals(placeholder[1])){
 				senha_tf.setText("");
+				senha_tf.setFont(tf_font2);
         	}
         }
 
@@ -229,12 +232,14 @@ public class Login extends JFrame implements MouseListener, KeyListener{
         if (e.getSource().equals(nome_tf)){
 			if(nome_tf.getText().equals("")){
 				nome_tf.setText(placeholder[0]);
+				nome_tf.setFont(tf_font);
 			}
         }
         
         if (e.getSource().equals(senha_tf)){
 			if(senha_tf.getText().equals("")){
 				senha_tf.setText(placeholder[1]);
+				senha_tf.setFont(tf_font);
 			}
         }
         
@@ -255,11 +260,13 @@ public class Login extends JFrame implements MouseListener, KeyListener{
         if (e.getSource().equals(nome_tf)){
 			if(nome_tf.getText().equals(placeholder[0])){
 				nome_tf.setText("");
+				nome_tf.setFont(tf_font2);
 			}
         }
         if(e.getSource().equals(senha_tf)){
         	if(senha_tf.getText().equals(placeholder[1])){
 				senha_tf.setText("");
+				senha_tf.setFont(tf_font2);
         	}
         }
         
