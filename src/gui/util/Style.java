@@ -11,6 +11,7 @@ public class Style {
 	
 	public static BorderLayout border = new BorderLayout();
 	public static FlowLayout flow_center = new FlowLayout(FlowLayout.CENTER);
+	public static GridLayout grid42 = new GridLayout(16, 1);
 	public static Font tf_font = new Font("Sans Serif", Font.PLAIN, 16);	//text field font
 	public static Font consolas_16 = new Font("Consolas", Font.PLAIN, 16);
 	public static Font tf_font2 = new Font("Sans Serif", Font.BOLD, 16);
