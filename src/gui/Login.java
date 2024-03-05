@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -12,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -28,7 +30,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 	JTextField nome_tf, email_tf, senha_tf;
 	JCheckBox politica_p;
 	JButton login_button;
-	ImageIcon icon = new ImageIcon("./img/..");
+	
 	
 	FlowLayout flow = new FlowLayout(FlowLayout.CENTER, 5, 35);
 	FlowLayout flow_2 = new FlowLayout(FlowLayout.CENTER);
@@ -55,6 +57,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		
 		placeholder[0] = "Seu nome de utilizador ou email";
 		placeholder[1] = "Sua senha";
+		ImageIcon icon = new ImageIcon("./img/tr.jpg");
 	
 	
 		this.setTitle("Login");
@@ -64,12 +67,13 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		this.setLayout(border);
 		this.getContentPane().setBackground(bg);
 		this.setLocationRelativeTo(null);
+		this.setIconImage(icon.getImage());
 		
 		title = new JLabel();
 		title.setFont(new Font("Consolas", Font.BOLD, 30));
 		title.setText("TURMA DOS REVOLTADOS");
 		title.setForeground(fg);
-		title.setIcon(icon);
+		//title.setIcon(icon);
 		title.setHorizontalTextPosition(JLabel.CENTER);
 		title.setVerticalTextPosition(JLabel.BOTTOM);
 		title.addMouseListener(this);
@@ -174,6 +178,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		cadastro.validate();
 		cadastro.setBackground(new Color(0xf2701a));
 	}
+	
 	
 	int tentativas = 3;	
 	private void login(String nome, String senha){
@@ -289,19 +294,25 @@ public class Login extends JFrame implements MouseListener, KeyListener{
         	if(senha_tf.getText().equals(placeholder[1])){
 				senha_tf.setText("");
 				senha_tf.setFont(tf_font2);
+				
         	}
+        	
         }
         
 	}
 	
 	@Override
 	public void keyPressed(KeyEvent e){
-	
+		
 	}
 	
 	@Override
 	public void keyReleased(KeyEvent e){
-	
+        if(e.getSource().equals(senha_tf)){
+			if(e.getKeyCode() == 10){
+				login(nome_tf.getText(), senha_tf.getText());
+			}
+        }
 	}
 
 	
