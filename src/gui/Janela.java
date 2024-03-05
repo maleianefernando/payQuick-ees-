@@ -5,26 +5,28 @@ import javax.swing.JFrame;
 import gui.util.Style;
 
 
-public class Janela extends JFrame {
-	Menu menu = new Menu();
+public class Janela{
+	public Menu menu = new Menu();
+	JFrame frame = new JFrame();
 	
 	public Janela (){
-		this.setTitle("Home");
-		this.setSize(1600, 900);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setLayout(Style.border);
-		this.getContentPane().setBackground(Style.bg);
-		this.setLocationRelativeTo(null);
+		frame.setTitle("Home");
+		frame.setSize(1600, 900);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLayout(Style.border);
+		frame.getContentPane().setBackground(Style.bg);
+		frame.setLocationRelativeTo(null);
 		
 		setMenu();
 		
 	}
 	
-	private void setMenu(){
-		menu.menu_bar(this);
+	public void setMenu(){
+		menu.set_jmenu_bar(frame);
 	
-		this.add(menu, Style.border.NORTH);
-		this.validate();
+		frame.add(menu.panel_menu, Style.border.WEST);
+		frame.validate();
 	}
+	
 }
