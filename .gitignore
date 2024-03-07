@@ -2,4 +2,4 @@
 /src/img_backup
 /src/gui/*.class
 /src/gui/util/*.class
-
+/src/xutil/*.class
