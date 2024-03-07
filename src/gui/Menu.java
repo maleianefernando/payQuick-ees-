@@ -89,18 +89,21 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 	}
 	
+	
+	int side_status = 1;
 	@Override
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(side_JMenuItem[0])){
-			//Login.janela.remove(menu);
-			//Login.janela.validate();
-			//new Janela();
-			//Login.removeMenu();
 			
-			System.out.println("Ola Mundo");
-			//Utilitario.login_ref.janela.remove(Utilitario.menuPanel_ref);
-			//Utilitario.login_ref.janela.validate();
 			
+			if(side_status == 1){
+				side_status = Utilitario.login_ref.janela.removeMenuSide();
+				System.out.println("menu removido,  status: " + side_status);
+			}
+			else{
+				side_status = Utilitario.login_ref.janela.addMenuSide();
+				System.out.println("menu adicionado,  status: " + side_status);
+			}
 		}
 	}
 	

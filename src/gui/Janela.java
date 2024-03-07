@@ -18,15 +18,29 @@ public class Janela extends JFrame implements Utilitario{
 		this.getContentPane().setBackground(Style.bg);
 		this.setLocationRelativeTo(null);
 		
-		setMenu();
+		this.setMenu();
+		this.addMenuSide();
 		
 	}
 	
 	public void setMenu(){
 		menu.set_jmenu_bar(this);
-	
-		this.add(menu, Style.border.WEST);
 		this.validate();
 	}
 	
+	public int addMenuSide(){
+		this.getContentPane().add(menu, Style.border.WEST);
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+		
+		return 1;
+	}
+	
+	public int removeMenuSide(){
+		this.getContentPane().remove(menu);
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+		
+		return -1;
+	}	
 }
