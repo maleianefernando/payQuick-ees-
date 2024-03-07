@@ -12,15 +12,16 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import gui.util.Style;
+import xutil.Utilitario;
 
-
-public class Menu implements ActionListener{
+public class Menu extends JPanel implements ActionListener, Utilitario{
 	public JPanel panel_menu = new JPanel();
 
-	private String[] side_bar_items = new String[] {"Menu"};
-	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Menssalidades Em Atraso", "Disciplinas Lecionadas"};
-	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes"};
-	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?"};
+	//side bar JMenuIems titles
+	private String[] side_bar_items = new String[] {"Menu"};	//
+	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Menssalidades Em Atraso", "Disciplinas Lecionadas"};	//items of the menu 'estudante'
+	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes"};	//items of the menu 'funcionario'
+	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?"};	//items of the menu ajuda
 	
 	private JButton estudante_cadastrado, funcionario_cadastrado, cadastrar, turmas; 
 	private JMenuBar jmenu_bar = new JMenuBar();
@@ -33,17 +34,17 @@ public class Menu implements ActionListener{
 	private JMenuItem[] ajuda_JMenuItem = new JMenuItem[ajuda_items.length];
 	private JMenuItem[] side_JMenuItem = new JMenuItem[side_bar_items.length];
 	
-	Menu(){
-		panel_menu.setLayout(Style.grid42);
-		panel_menu.setBackground(Style.blue);
-		panel_menu.setVisible(true);
+	public Menu(){
+		this.setLayout(Style.grid42);
+		this.setBackground(Style.blue);
+		this.setVisible(true);
 	
 		botoes(estudante_cadastrado, "Estudante Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft);
 		botoes(turmas, "Turmas", Style.blue, Color.white, Style.ft);
 		
-		panel_menu.validate();
+		this.validate();
 	}
 	
 	
@@ -56,7 +57,7 @@ public class Menu implements ActionListener{
 		btn.setFocusable(false);
 		//btn.setPreferredSize(new Dimension(375, 50));
 		
-		panel_menu.add(btn);
+		this.add(btn);
 	}
 	
 	
@@ -82,17 +83,23 @@ public class Menu implements ActionListener{
 			
 			jm_item[i].setFont(ft);
 			jm.add(jm_item[i]);
+			
+			//Adding ActionListeners to all JMenuItems
+			jm_item[i].addActionListener(this);
 		}
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e){
-		if(e.getSource().equals(side_bar_items[0])){
+		if(e.getSource().equals(side_JMenuItem[0])){
 			//Login.janela.remove(menu);
 			//Login.janela.validate();
 			//new Janela();
 			//Login.removeMenu();
 			
+			System.out.println("Ola Mundo");
+			//Utilitario.login_ref.janela.remove(Utilitario.menuPanel_ref);
+			//Utilitario.login_ref.janela.validate();
 			
 		}
 	}

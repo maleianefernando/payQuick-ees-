@@ -179,13 +179,13 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		cadastro.setBackground(new Color(0xf2701a));
 	}
 	
-	
+	public Janela janela;
 	int tentativas = 3;	
 	private void login(String nome, String senha){
 		
 		if(nome.equals("Admin") && senha.equals("admin")){
 			this.dispose();
-			new Janela();
+			janela = new Janela();
 		}
 		else {
 			if(tentativas != 0)

@@ -3,30 +3,30 @@ package gui;
 import javax.swing.JFrame;
 
 import gui.util.Style;
+import xutil.Utilitario;
 
-
-public class Janela{
-	public Menu menu = new Menu();
-	JFrame frame = new JFrame();
+public class Janela extends JFrame implements Utilitario{
+	public Menu menu = Utilitario.menu_ref;
+	//public JFrame frame = new JFrame();
 	
 	public Janela (){
-		frame.setTitle("Home");
-		frame.setSize(1600, 900);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.setLayout(Style.border);
-		frame.getContentPane().setBackground(Style.bg);
-		frame.setLocationRelativeTo(null);
+		this.setTitle("Home");
+		this.setSize(1600, 900);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);
+		this.setLayout(Style.border);
+		this.getContentPane().setBackground(Style.bg);
+		this.setLocationRelativeTo(null);
 		
 		setMenu();
 		
 	}
 	
 	public void setMenu(){
-		menu.set_jmenu_bar(frame);
+		menu.set_jmenu_bar(this);
 	
-		frame.add(menu.panel_menu, Style.border.WEST);
-		frame.validate();
+		this.add(menu, Style.border.WEST);
+		this.validate();
 	}
 	
 }
