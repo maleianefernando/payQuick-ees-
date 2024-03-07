@@ -1,8 +1,12 @@
-import gui.*;
 
-class Main {
+import gui.*;
+import xutil.Utilitario;
+
+class Main implements Utilitario {
 	
 	public static void main(String[] args){
-		new Login();
+		Login login = Utilitario.login_ref;
+		//System.out.println(Utilitario.login_ref);
+		//System.out.println(login);
 	}
 }
