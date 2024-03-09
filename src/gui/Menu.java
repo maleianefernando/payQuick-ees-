@@ -19,8 +19,8 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 
 	//side bar JMenuIems titles
 	private String[] side_bar_items = new String[] {"Menu"};	//
-	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Menssalidades Em Atraso", "Disciplinas Lecionadas"};	//items of the menu 'estudante'
-	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes"};	//items of the menu 'funcionario'
+	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Menssalidades", "Disciplinas Lecionadas", "Cadastrar"};	//items of the menu 'estudante'
+	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes", "Cadastrar"};	//items of the menu 'funcionario'
 	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?"};	//items of the menu ajuda
 	
 	private JButton estudante_cadastrado, funcionario_cadastrado, cadastrar, turmas; 
@@ -90,20 +90,50 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	}
 	
 	
-	int side_status = 1;
+	int side_status = 0;
+	int list_status = 0;
+	int add_status = 0;
 	@Override
 	public void actionPerformed(ActionEvent e){
+		
+		//manange left side menu
 		if(e.getSource().equals(side_JMenuItem[0])){
 			
 			
-			if(side_status == 1){
-				side_status = Utilitario.login_ref.janela.removeMenuSide();
-				System.out.println("menu removido,  status: " + side_status);
+			if(side_status == -1 || side_status == 0){
+				side_status = Utilitario.login_ref.janela.addConteiner(Utilitario.menu_ref, Style.border.WEST, "Menu");
+				//System.out.println("menu removido,  status: " + side_status);
+				
 			}
 			else{
-				side_status = Utilitario.login_ref.janela.addMenuSide();
-				System.out.println("menu adicionado,  status: " + side_status);
+				side_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.login_ref.janela.menu_ref);
+				//System.out.println("menu adicionado,  status: " + side_status);
+				
 			}
+		}
+		
+		//list added students
+		else if(e.getSource().equals(est_JMenuItem[0])){	
+			
+			if(list_status == 0 || list_status == -1){
+				list_status = Utilitario.login_ref.janela.addConteiner(Utilitario.lista_estudante_ref, Style.border.CENTER, "Lista Nominal De Estudantes");
+			}
+			else {
+				list_status = Utilitario.login_ref.janela.removeConteiner(lista_estudante_ref);
+			}
+			
+		}
+		
+		//add students
+		else if(e.getSource().equals(est_JMenuItem[4])){
+			
+			if(add_status == 0 || add_status == -1){
+				add_status = Utilitario.login_ref.janela.addConteiner(Utilitario.cadastrar_estudante_ref, Style.border.CENTER, "Cadastrar Estudantes");
+			}
+			else {
+				add_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
+			}
+			
 		}
 	}
 	
