@@ -24,7 +24,7 @@ public class Style {
 	public static Color tf_bg = new Color(0xffffff);	//text-field background - lightgray
 	public static Color tf_fg = new Color(0x123456);	//text-field forground - blue
 	public static Color label_fg = new Color(0x000000);	//label text-field - black
-	public static Color blue = new Color(0x3960a1);
+	public static Color blue = new Color(0x3960a1);	//button background
 	
 	public Style(){
 		
