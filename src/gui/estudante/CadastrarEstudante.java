@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import connection.Conexao;
@@ -217,7 +218,12 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 				ps.setString(6, "ocupacao");
 				ps.setString(7, "disciplinas");
 
-				ps.execute();
+				try {
+					ps.execute();
+					JOptionPane.showMessageDialog(null, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, "Numero de digitos execedido", "Erro", JOptionPane.INFORMATION_MESSAGE);
+				}
 				ps.close();
 			}
 			catch(SQLException ex){

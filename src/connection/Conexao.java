@@ -5,28 +5,27 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Conexao {
-    public static String url;
-    public static String user;
-    public static String password;
+    public static String url = "jdbc:mysql://localhost:3306/turma_dos_revoltados";
+    public static String user = "root";
+    public static String password = "";
 
     private static Connection conn;
 
     public Conexao(){
 
-        url = "jdbc:mysql://localhost:3306/turma_dos_revoltados";
-        user = "root";
-        password = "";
+        // url = "jdbc:mysql://localhost:3306/turma_dos_revoltados";
+        // user = "root";
+        // password = "";
     }
 
 
     public static Connection getConexao(){
-        Conexao dbParams = new Conexao();
-
-        System.out.println("connection");
 
         try{
             if (conn == null) {
-                conn = DriverManager.getConnection(dbParams.url, dbParams.user, dbParams.password);
+                conn = DriverManager.getConnection(url, user, password);
+
+                System.out.println("connected!!!");
 
                 return conn;
             }
@@ -34,6 +33,7 @@ public class Conexao {
                 return conn;
             }
         } catch(SQLException e) {
+            System.out.println("connection failled!!!");
             e.printStackTrace();
             return null;
         }
