@@ -6,15 +6,22 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import connection.Conexao;
+
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 
 import gui.util.Style;
 
@@ -41,9 +48,11 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	JButton submit = new JButton("Salvar");
 	JButton clear = new JButton("Limpar Formulario");
 	
+	//empty label to mae busy the panel[6]
+	JLabel empty_label = new JLabel("");
 	
 	public CadastrarEstudante() {
-		panels = new JPanel[form_text.length+2];
+		panels = new JPanel[15];	//form_text.length+2
 		labels = new JLabel[form_text.length];
 		text_fields = new JTextField[form_text.length];
 		radio_button = new JRadioButton[radio_text.length];
@@ -61,12 +70,20 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		this.add(new JLabel(""));
 		this.addPanel(panels, labels, text_fields);
 		
-		
-		panels[5] = new JPanel();
-		panels[5].add(new JLabel(""));
+		//The elements are added tho the panels[5] on actionPerformed method
+		panels[5] = new JPanel(Style.flow_center);
 		panels[5].setBackground(Style.bg);
+		panels[5].setPreferredSize(new Dimension(200, 50));
 		this.add(panels[5]);
 		
+		//Adding select subject options
+		panels[6] = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
+		panels[6].setBackground(Style.bg);
+		this.selectDisciplina(panels[6]);
+		
+		this.add(panels[6]);
+		
+		//Adding buttons
 		this.addButtons(submit);
 		this.addButtons(clear);
 	}
@@ -92,6 +109,8 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 					radio_button[k] = new JRadioButton(radio_text[k]);
 					radio_button[k].setBackground(Style.bg);
 					radio_button[k].setFocusable(false);
+					radio_button[k].setFont(Style.tf_font);
+					
 					radio_button[k].addActionListener(this);
 				}
 			}
@@ -126,21 +145,85 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		button.setPreferredSize(new Dimension(200, 25));
 		button.setFocusable(false);
 		
-		panels[6] = new JPanel(Style.flow_center);
-		panels[6].setPreferredSize(new Dimension(200, 50));
-		panels[6].setBackground(Style.bg);
+		panels[10] = new JPanel(Style.flow_center);
+		panels[10].setPreferredSize(new Dimension(200, 50));
+		panels[10].setBackground(Style.bg);
 		
 		//
 		button.addActionListener(this);
-		panels[6].add(button);
-		this.add(panels[6]);
+		panels[10].add(button);
+		this.add(panels[10]);
 		
 	}
 	
+	private String[] __nivel = new String[] {"Ensino Superior", "Ensino Secundario", "Ensino Medio", "Outro"};
+	private JRadioButton[] nivel = new JRadioButton[__nivel.length];
+	private ButtonGroup button_group = new ButtonGroup();
 	
+	private void setNivelActual(JPanel panel){
+		for(int i = 0; i < __nivel.length; i++){
+		
+			nivel[i] = new JRadioButton(__nivel[i]);
+			nivel[i].setFocusable(false);
+			nivel[i].setBackground(Style.bg);
+			nivel[i].setFont(Style.tf_font);
+			
+			panel.add(nivel[i]);
+			button_group.add(nivel[i]);
+		}
+	}
+	
+	private String[] __disciplina = new String[] {"Português", "Matemática", "Inglês", "Filosofia", "História", "Geografia", "Quimica", "Biologia", "Física"};
+	private JCheckBox[] disciplina = new JCheckBox[__disciplina.length];
+	
+	private void selectDisciplina(JPanel panel){
+		
+		for(int i = 0; i < __disciplina.length; i++){
+			disciplina[i] = new JCheckBox(__disciplina[i]);
+			disciplina[i].setBackground(Style.bg);
+			disciplina[i].setFont(Style.tf_font);
+			
+			panel.add(disciplina[i]);
+		}
+	}
+	
+	int status_nivel = 0;
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(submit)){
 			System.out.println("Salvar..");
+			String id = "est_";
+			Random r = new Random();
+
+			for(int i = 0; i < 4; i++){
+				id = id + r.nextInt(9);
+			}
+
+			String nome = text_fields[0].getText();
+			Integer idade = Integer.parseInt(text_fields[1].getText());
+			String bairro = text_fields[2].getText();
+			String identificacao = text_fields[3].getText();
+			
+			String sql = "INSERT INTO estudantes (ID, NOME, IDADE, BAIRRO, IDENTIFICACAO_NR, OCUPACAO, DISCIPLINAS) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			PreparedStatement ps = null;
+
+			try{
+				ps = Conexao.getConexao().prepareStatement(sql);
+
+				ps.setString(1, id);
+				ps.setString(2, nome);
+				ps.setInt(3, idade);
+				ps.setString(4, bairro);
+				ps.setString(5, identificacao);
+				ps.setString(6, "ocupacao");
+				ps.setString(7, "disciplinas");
+
+				ps.execute();
+				ps.close();
+			}
+			catch(SQLException ex){
+				ex.printStackTrace();
+			}
+
 		}
 		
 		else if(e.getSource().equals(clear)){
@@ -148,7 +231,26 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		}
 		
 		else if(e.getSource().equals(radio_button[0])){
+			
+			if(status_nivel != 1){
+				this.setNivelActual(panels[5]);
+				
+				panels[5].revalidate();
+				panels[5].repaint();
+				
+				status_nivel = 1;
+			}
+		}
 		
+		else if(e.getSource().equals(radio_button[1])){
+			status_nivel = -1;
+			
+			for(int i = 0; i < __nivel.length; i++){
+				panels[5].remove(nivel[i]);
+			}
+			
+			panels[5].revalidate();
+			panels[5].repaint();
 		}
 	}
 }
