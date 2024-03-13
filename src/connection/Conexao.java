@@ -9,7 +9,7 @@ public class Conexao {
     public static String user = "root";
     public static String password = "";
 
-    private static Connection conn;
+    public static Connection conn;
 
     public Conexao(){
 

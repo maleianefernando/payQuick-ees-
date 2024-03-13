@@ -200,7 +200,17 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 			}
 
 			String nome = text_fields[0].getText();
-			Integer idade = Integer.parseInt(text_fields[1].getText());
+			Integer idade = 0;
+			try{
+				idade = Integer.parseInt(text_fields[1].getText());
+			} catch (NumberFormatException ex){
+				if(text_fields[1].getText().equals("")){
+					
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Insira um valor numerico para a idade", "ERRO!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
 			String bairro = text_fields[2].getText();
 			String identificacao = text_fields[3].getText();
 			
@@ -209,7 +219,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 
 			try{
 				ps = Conexao.getConexao().prepareStatement(sql);
-
+				
 				ps.setString(1, id);
 				ps.setString(2, nome);
 				ps.setInt(3, idade);
@@ -221,6 +231,10 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 				try {
 					ps.execute();
 					JOptionPane.showMessageDialog(null, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
+					
+					System.out.println(ps);
+					System.out.println(sql);
+
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, "Numero de digitos execedido", "Erro", JOptionPane.INFORMATION_MESSAGE);
 				}

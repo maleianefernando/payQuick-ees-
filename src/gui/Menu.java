@@ -117,9 +117,12 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			
 			if(list_status == 0 || list_status == -1){
 				list_status = Utilitario.login_ref.janela.addConteiner(Utilitario.lista_estudante_ref, Style.border.CENTER, "Lista Nominal De Estudantes");
+
+				Utilitario.lista_estudante_ref.fill_table_status = 1;
 			}
 			else {
 				list_status = Utilitario.login_ref.janela.removeConteiner(lista_estudante_ref);
+				Utilitario.lista_estudante_ref.fill_table_status = -1;
 			}
 			
 		}
