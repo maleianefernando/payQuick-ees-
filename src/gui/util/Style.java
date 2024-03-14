@@ -1,6 +1,5 @@
 package gui.util;
 
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.FlowLayout;

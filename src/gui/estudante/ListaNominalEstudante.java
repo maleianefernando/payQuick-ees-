@@ -2,7 +2,7 @@ package gui.estudante;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+//import java.awt.GridLayout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ import javax.swing.JTable;
 import gui.util.Style;
 
 public class ListaNominalEstudante extends JPanel{
-	private GridLayout grid21 = new GridLayout(2, 3);
+	//private GridLayout grid21 = new GridLayout(2, 3);
 	private JTable table;
 	private JScrollPane table_scroll;
 	
@@ -40,7 +40,7 @@ public class ListaNominalEstudante extends JPanel{
 		this.setLayout(new BorderLayout());
 		this.setBackground(Style.bg);
 
-		this.fill_table();
+		this.select_from_database();
 		
 		this.create_table();
 		this.add(new JLabel("            "), BorderLayout.NORTH);
@@ -58,6 +58,12 @@ public class ListaNominalEstudante extends JPanel{
 		add_row(model, table_data);
 		table = new JTable(model);
 		table.setBackground(Style.bg);
+		
+		//update table
+		model.fireTableDataChanged();
+		model.fireTableStructureChanged();
+		//
+
 		table.revalidate();
 		table.repaint();
 
@@ -67,6 +73,7 @@ public class ListaNominalEstudante extends JPanel{
 		table_scroll.revalidate();
 		table_scroll.repaint();
 		//table_scroll.setBackground(Color.red);
+		System.out.println("table created" + "\n" + table_data);
 	}
 	
 	private void add_columns(DefaultTableModel model, String[] columns){
@@ -79,10 +86,11 @@ public class ListaNominalEstudante extends JPanel{
 		for(int i = 0; i < rows.length; i++){
 			model.addRow(rows[i]);
 		}
+		System.out.println("adding row");
 	}
 
 
-	private void fill_table(){
+	private void select_from_database(){
 		String sql = "SELECT * FROM estudantes";
 		String cout = "SELECT COUNT(id) FROM estudantes";
 			PreparedStatement ps = null;
@@ -115,7 +123,9 @@ public class ListaNominalEstudante extends JPanel{
 						//table_data[i][4] = resultSet.getInt("ocupacao");	//get ocupacao
 						table_data[i][4] = resultSet.getString("disciplinas");	//get subjects
 						i++;
+						
 					}
+					System.out.println("select query");
 					//JOptionPane.showMessageDialog(null, "Visualizando!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception ex) {

@@ -25,8 +25,6 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
-import gui.Janela;
-import xutil.Utilitario;
 
 public class Login extends JFrame implements MouseListener, KeyListener{
 	JPanel conteiner, header, cadastro, nome_panel, senha_panel, submit_panel;
@@ -67,7 +65,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		this.setTitle("Login");
 		this.setSize(1050, 550);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
+		this.setVisible(false);
 		this.setLayout(border);
 		this.getContentPane().setBackground(bg);
 		this.setLocationRelativeTo(null);
@@ -91,6 +89,9 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		this.validate();
 	}
 	
+	public void start(){
+		this.setVisible(true);
+	}
 	
 	public void formulario_cadastro(){
 		cadastro = new JPanel(grid);
@@ -183,7 +184,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		cadastro.setBackground(new Color(0xf2701a));
 	}
 	
-	public Janela janela;
+	public static Janela janela;
 	int tentativas = 3;	
 	int i = 1;
 	private void login(String nome, String senha){
@@ -208,7 +209,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 					
 					i = 2;
 					this.dispose();
-					janela = Utilitario.janela_ref;
+					janela = new Janela();
 					janela.start(funcao_db);
 					if(funcao_db.equals("Administrador")){	
 						// janela = new Janela();
@@ -245,7 +246,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Database server is off");
 		}
 
 		// if(nome.equals("Admin") && senha.equals("admin")){

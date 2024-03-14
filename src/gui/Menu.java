@@ -7,12 +7,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import gui.estudante.ListaNominalEstudante;
 import gui.util.Style;
 import xutil.Utilitario;
 
@@ -119,6 +119,9 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	int side_status = 0;
 	int list_status = 0;
 	int add_status = 0;
+	Login login;
+	ListaNominalEstudante lista_est = new ListaNominalEstudante();
+
 	@Override
 	public void actionPerformed(ActionEvent e){
 
@@ -127,12 +130,12 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			
 			
 			if(side_status == -1 || side_status == 0){
-				side_status = Utilitario.login_ref.janela.addConteiner(Utilitario.menu_ref, Style.border.WEST, "Menu");
+				side_status = Login.janela.addConteiner(Utilitario.menu_ref, Style.border.WEST, "Menu");
 				//System.out.println("menu removido,  status: " + side_status);
 				
 			}
 			else{
-				side_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.login_ref.janela.menu_ref);
+				side_status = Login.janela.removeConteiner(Login.janela.menu_ref);
 				//System.out.println("menu adicionado,  status: " + side_status);
 				
 			}
@@ -140,15 +143,17 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		
 		//list added students
 		else if(e.getSource().equals(est_JMenuItem[0])){
+
 			// System.out.println(e.getSource().equals(estudante_cadastrado));
 			if(list_status == 0 || list_status == -1){
-				list_status = Utilitario.login_ref.janela.addConteiner(Utilitario.lista_estudante_ref, Style.border.CENTER, "Lista Nominal De Estudantes");
+				lista_est = new ListaNominalEstudante();
+				list_status = Login.janela.addConteiner(lista_est, Style.border.CENTER, "Lista Nominal De Estudantes");
 
-				Utilitario.lista_estudante_ref.start_list();
+				lista_est.start_list();
 			}
 			else {
-				list_status = Utilitario.login_ref.janela.removeConteiner(lista_estudante_ref);
-				Utilitario.lista_estudante_ref.fill_table_status = -1;
+				list_status = Login.janela.removeConteiner(lista_est);
+				lista_est.fill_table_status = -1;
 			}
 			
 		}
@@ -157,17 +162,18 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
 			
 			if(add_status == 0 || add_status == -1){
-				add_status = Utilitario.login_ref.janela.addConteiner(Utilitario.cadastrar_estudante_ref, Style.border.CENTER, "Cadastrar Estudantes");
+				add_status = Login.janela.addConteiner(Utilitario.cadastrar_estudante_ref, Style.border.CENTER, "Cadastrar Estudantes");
 			}
 			else {
-				add_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
+				add_status = Login.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
 			}
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
 			//Utilitario.login_ref.janela.dispose();
-			Login l = new Login();
-			
+			Login.janela.dispose();
+			login = new Login();
+			login.start();
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem

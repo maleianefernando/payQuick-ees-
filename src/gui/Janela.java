@@ -1,21 +1,14 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import gui.util.Style;
-import gui.estudante.*;
 import xutil.Utilitario;
 
 public class Janela extends JFrame implements Utilitario{
-	public Menu menu = Utilitario.menu_ref;
-	private ListaNominalEstudante lista_estudante = Utilitario.lista_estudante_ref;
+	//public Menu menu = Utilitario.menu_ref;
+	public Menu menu = new Menu();
 	//public JFrame frame = new JFrame();
 	private String __title = "Turma Dos Revoltados";
 	
