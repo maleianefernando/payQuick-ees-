@@ -1,5 +1,11 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -14,6 +20,10 @@ public class Janela extends JFrame implements Utilitario{
 	private String __title = "Turma Dos Revoltados";
 	
 	public Janela (){
+		
+	}
+	
+	public void start(String user){
 		this.setTitle(__title);
 		this.setSize(1600, 900);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,15 +32,29 @@ public class Janela extends JFrame implements Utilitario{
 		this.getContentPane().setBackground(Style.bg);
 		this.setLocationRelativeTo(null);
 		
-		this.setMenu();
+		if(user.equalsIgnoreCase("administrador")){
+			this.setAdmMenu();
+
+		}else if(user.equalsIgnoreCase("professor")){
+			this.setMenu();
+			
+		}
 		//this.addMenuSide();
-		
+		System.out.println("Start");
 	}
-	
+
+	public void setAdmMenu(){
+		menu.set_adm_jmenu_bar(this);
+		
+		this.revalidate();
+		this.repaint();
+	}
+
 	public void setMenu(){
 		menu.set_jmenu_bar(this);
 		
-		this.validate();
+		this.revalidate();
+		this.repaint();
 	}
 	
 	/*

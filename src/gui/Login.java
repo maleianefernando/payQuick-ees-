@@ -26,6 +26,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 
 import gui.Janela;
+import xutil.Utilitario;
 
 public class Login extends JFrame implements MouseListener, KeyListener{
 	JPanel conteiner, header, cadastro, nome_panel, senha_panel, submit_panel;
@@ -207,7 +208,8 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 					
 					i = 2;
 					this.dispose();
-					janela = new Janela();
+					janela = Utilitario.janela_ref;
+					janela.start(funcao_db);
 					if(funcao_db.equals("Administrador")){	
 						// janela = new Janela();
 					}

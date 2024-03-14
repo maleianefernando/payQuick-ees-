@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -45,7 +46,8 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft);
 		botoes(turmas, "Turmas", Style.blue, Color.white, Style.ft);
 		
-		this.validate();
+		this.revalidate();
+		this.repaint();
 	}
 	
 	
@@ -57,13 +59,20 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		btn.setForeground(fg);
 		btn.setFocusable(false);
 		//btn.setPreferredSize(new Dimension(375, 50));
-		
+		btn.addActionListener(e -> {
+
+			System.out.println("Estudante cadastrado");
+		});
+		btn.addActionListener(this);
+		//System.out.println(btn.getActionListeners() + "\n" + btn);
+
 		this.add(btn);
+
 	}
 	
 	
-	//setting the menu bar
-	public void set_jmenu_bar(javax.swing.JFrame jf){
+	//setting the admin menu bar
+	public void set_adm_jmenu_bar(JFrame jf){
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
 		create_jmenu(funcionario, "Funcionario", Style.menu_font, func_JMenuItem, func_items);
@@ -72,6 +81,14 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		jf.setJMenuBar(jmenu_bar);
 	}
 
+	//setting the menu bar
+	public void set_jmenu_bar(JFrame jf){
+		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
+		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
+		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
+		
+		jf.setJMenuBar(jmenu_bar);
+	}
 
 	//setting the menus
 	private void create_jmenu(JMenu jm, String jm_txt, Font ft, JMenuItem[] jm_item, String[] items){
@@ -104,7 +121,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	int add_status = 0;
 	@Override
 	public void actionPerformed(ActionEvent e){
-		
+
 		//manange left side menu
 		if(e.getSource().equals(side_JMenuItem[0])){
 			
@@ -122,8 +139,8 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 		
 		//list added students
-		else if(e.getSource().equals(est_JMenuItem[0])){	
-			
+		else if(e.getSource().equals(est_JMenuItem[0])){
+			// System.out.println(e.getSource().equals(estudante_cadastrado));
 			if(list_status == 0 || list_status == -1){
 				list_status = Utilitario.login_ref.janela.addConteiner(Utilitario.lista_estudante_ref, Style.border.CENTER, "Lista Nominal De Estudantes");
 
@@ -137,7 +154,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 		
 		//add students
-		else if(e.getSource().equals(est_JMenuItem[4])){
+		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
 			
 			if(add_status == 0 || add_status == -1){
 				add_status = Utilitario.login_ref.janela.addConteiner(Utilitario.cadastrar_estudante_ref, Style.border.CENTER, "Cadastrar Estudantes");
@@ -148,6 +165,8 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
+			//Utilitario.login_ref.janela.dispose();
+			Login l = new Login();
 			
 		}
 
