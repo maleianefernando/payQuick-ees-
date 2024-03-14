@@ -4,3 +4,4 @@
 /src/gui/util/*.class
 /src/xutil/*.class
 /src/gui/estudante/*.class
+/src/connection/*.class

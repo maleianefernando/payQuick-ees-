@@ -19,15 +19,15 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 
 	//side bar JMenuIems titles
 	private String[] side_bar_items = new String[] {"Menu"};	//
-	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Menssalidades", "Disciplinas Lecionadas", "Cadastrar"};	//items of the menu 'estudante'
+	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Mensalidades", "Disciplinas Lecionadas", "Cadastrar"};	//items of the menu 'estudante'
 	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes", "Cadastrar"};	//items of the menu 'funcionario'
-	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?"};	//items of the menu ajuda
+	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?", "Logout", "Sair"};	//items of the menu ajuda
 	
 	private JButton estudante_cadastrado, funcionario_cadastrado, cadastrar, turmas; 
-	private JMenuBar jmenu_bar = new JMenuBar();
+	public JMenuBar jmenu_bar = new JMenuBar();
 	private JMenu side_bar;
 	private JMenu estudante;
-	private JMenu funcionario;
+	public JMenu funcionario;
 	private JMenu ajuda;
 	private JMenuItem[] est_JMenuItem = new JMenuItem[est_items.length];
 	private JMenuItem[] func_JMenuItem = new JMenuItem[func_items.length];
@@ -89,7 +89,6 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 	}
 	
-	
 	int side_status = 0;
 	int list_status = 0;
 	int add_status = 0;
@@ -118,7 +117,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			if(list_status == 0 || list_status == -1){
 				list_status = Utilitario.login_ref.janela.addConteiner(Utilitario.lista_estudante_ref, Style.border.CENTER, "Lista Nominal De Estudantes");
 
-				Utilitario.lista_estudante_ref.fill_table_status = 1;
+				Utilitario.lista_estudante_ref.start_list();
 			}
 			else {
 				list_status = Utilitario.login_ref.janela.removeConteiner(lista_estudante_ref);
@@ -136,6 +135,10 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			else {
 				add_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
 			}
+			
+		}
+
+		else if(e.getSource().equals(ajuda_JMenuItem[2])){
 			
 		}
 	}

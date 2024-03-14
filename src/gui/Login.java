@@ -8,6 +8,8 @@ import java.awt.FlowLayout;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.awt.event.MouseEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
@@ -17,6 +19,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import connection.Conexao;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.ImageIcon;
@@ -181,27 +186,87 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 	
 	public Janela janela;
 	int tentativas = 3;	
+	int i = 1;
 	private void login(String nome, String senha){
-		
-		if(nome.equals("Admin") && senha.equals("admin")){
-			this.dispose();
-			janela = new Janela();
+		String id_db;
+		String nome_db;
+		String senha_db;
+		String funcao_db;
+
+		String sql = "SELECT * FROM utilizadores";
+
+		try {
+			PreparedStatement ps = Conexao.getConexao().prepareStatement(sql);
+			ResultSet resultSet = ps.executeQuery(sql);
+
+			while (resultSet.next()) {
+				id_db = resultSet.getString("id");
+				nome_db = resultSet.getString("nome");
+				senha_db = resultSet.getString("senha");
+				funcao_db = resultSet.getString("funcao");
+
+				if(((nome.equals(nome_db) || nome.equals(id_db)) && senha.equals(senha_db))){
+					
+					i = 2;
+					this.dispose();
+					janela = new Janela();
+					if(funcao_db.equals("Administrador")){	
+						// janela = new Janela();
+					}
+					else if(funcao_db.equals("Professor")){
+						// janela = new Janela();
+					}
+					
+				}
+				else {
+					if(i == 2){
+						break;
+					}
+
+					i = -1;
+				}
+			}
+
+			if(i == -1){
+				// System.out.println("not found");
+				if(tentativas != 0){
+					tentativas--;
+				}
+				
+				if (nome.equals(placeholder[0]) || senha.equals(placeholder[1])){
+					JOptionPane.showMessageDialog(null, "Por favor, preencher todos os campos\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "Credeenciais erradas\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+				
+				if(tentativas == 0){
+					login_button.setEnabled(false);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		else {
-			if(tentativas != 0)
-				tentativas--;
+
+		// if(nome.equals("Admin") && senha.equals("admin")){
+		// 	this.dispose();
+		// 	janela = new Janela();
+		// }
+		// else {
+		// 	if(tentativas != 0)
+		// 		tentativas--;
 			
-			if (nome.equals(placeholder[0]) || senha.equals(placeholder[1])){
-				JOptionPane.showMessageDialog(null, "Por favor, preencher todos os campos\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "Credeenciais erradas\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
-			}
+		// 	if (nome.equals(placeholder[0]) || senha.equals(placeholder[1])){
+		// 		JOptionPane.showMessageDialog(null, "Por favor, preencher todos os campos\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+		// 	}
+		// 	else {
+		// 		JOptionPane.showMessageDialog(null, "Credeenciais erradas\n("+tentativas+") tentativas restantes", "Erro", JOptionPane.ERROR_MESSAGE);
+		// 	}
 			
-			if(tentativas == 0){
-				login_button.setEnabled(false);
-			}
-		}
+		// 	if(tentativas == 0){
+		// 		login_button.setEnabled(false);
+		// 	}
+		// }
 	}
 	
 	

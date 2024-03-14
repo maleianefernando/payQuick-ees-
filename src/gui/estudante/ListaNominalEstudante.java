@@ -32,6 +32,10 @@ public class ListaNominalEstudante extends JPanel{
 
 	public ListaNominalEstudante(){
 		
+
+	}
+	
+	public void start_list(){
 		this.setVisible(true);
 		this.setLayout(new BorderLayout());
 		this.setBackground(Style.bg);
@@ -43,9 +47,8 @@ public class ListaNominalEstudante extends JPanel{
 		this.add(new JLabel("            "), BorderLayout.EAST);
 		this.add(table_scroll, BorderLayout.CENTER);
 		this.add(new JLabel("            "), BorderLayout.WEST);
-
 	}
-	
+
 	public void create_table(){
 		//table model
 		DefaultTableModel model = new DefaultTableModel();
@@ -55,10 +58,14 @@ public class ListaNominalEstudante extends JPanel{
 		add_row(model, table_data);
 		table = new JTable(model);
 		table.setBackground(Style.bg);
+		table.revalidate();
+		table.repaint();
 
 		//setting the jscrollpane to add the table
 		table_scroll = new JScrollPane(table);
 		table_scroll.setSize(new Dimension(500, 500));
+		table_scroll.revalidate();
+		table_scroll.repaint();
 		//table_scroll.setBackground(Color.red);
 	}
 	
