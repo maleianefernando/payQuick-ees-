@@ -29,6 +29,7 @@ public class Janela extends JFrame implements Utilitario{
 	
 	public void setMenu(){
 		menu.set_jmenu_bar(this);
+		
 		this.validate();
 	}
 	

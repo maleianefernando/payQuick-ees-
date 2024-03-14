@@ -5,3 +5,8 @@
 /src/xutil/*.class
 /src/gui/estudante/*.class
 /src/connection/*.class
+/src/img/board.png
+/*.class
+/src/mysql-connector-j-8.2.0.jar
+/lib/*
+

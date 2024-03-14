@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -38,7 +39,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		this.setLayout(Style.grid42);
 		this.setBackground(Style.blue);
 		this.setVisible(true);
-	
+		
 		botoes(estudante_cadastrado, "Estudante Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft);
@@ -71,18 +72,27 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		jf.setJMenuBar(jmenu_bar);
 	}
 
-	
+
 	//setting the menus
 	private void create_jmenu(JMenu jm, String jm_txt, Font ft, JMenuItem[] jm_item, String[] items){
 		jm = new JMenu(jm_txt);
 		jm.setFont(ft);
+		jm.setMnemonic(jm_txt.charAt(0));
 		jmenu_bar.add(jm);
 		
 		for(int i = 0; i < jm_item.length; i++){
+			int k = 0;
+
 			jm_item[i] = new JMenuItem(items[i]);
-			
+
 			jm_item[i].setFont(ft);
 			jm.add(jm_item[i]);
+
+			if(items[i].charAt(k) == 'M' || items[i].charAt(k) == 'E' || items[i].charAt(k) == 'F' || items[i].charAt(k) == 'A'){
+				++k;
+			}
+			
+			jm_item[i].setMnemonic(items[i].charAt(k));
 			
 			//Adding ActionListeners to all JMenuItems
 			jm_item[i].addActionListener(this);
@@ -135,13 +145,15 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			else {
 				add_status = Utilitario.login_ref.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
 			}
+		}
+
+		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
 			
 		}
 
-		else if(e.getSource().equals(ajuda_JMenuItem[2])){
-			
+		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
+			System.exit(0);
 		}
 	}
-	
 }
 
