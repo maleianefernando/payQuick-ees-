@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -24,7 +23,6 @@ import connection.Conexao;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import gui.Janela;
