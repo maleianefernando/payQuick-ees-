@@ -193,7 +193,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		// String senha_db;
 		// String funcao_db;
 
-		String sql = "SELECT * FROM utilizadores WHERE nome = ? OR id = ? AND senha = ?";
+		String sql = "SELECT * FROM utilizadores WHERE nome = ? OR id_utilizador = ? AND senha = ?";
 		
 		try {
 			PreparedStatement ps = Conexao.getConexao().prepareStatement(sql);
@@ -264,6 +264,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 			}
 		} catch (Exception e) {
 			System.out.println("Database server is off");
+			System.out.println(e);
 		}
 
 		// if(nome.equals("Admin") && senha.equals("admin")){

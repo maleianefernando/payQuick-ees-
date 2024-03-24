@@ -14,6 +14,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import gui.estudante.ListaNominalEstudante;
+import gui.funcionario.CadastrarFuncionario;
 import gui.util.Style;
 import xutil.Utilitario;
 
@@ -120,8 +121,13 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	int side_status = 0;
 	int list_status = 0;
 	int add_status = 0;
+	int reg_func_status = 0;
+	
 	Login login;
+
 	ListaNominalEstudante lista_est = new ListaNominalEstudante();
+
+	CadastrarFuncionario reg_func = new CadastrarFuncionario();
 
 	@Override
 	public void actionPerformed(ActionEvent e){
@@ -170,13 +176,22 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			}
 		}
 
+		else if(e.getSource().equals(func_JMenuItem[3])){
+			if(reg_func_status == 0 || reg_func_status == -1){
+				reg_func_status = Login.janela.addConteiner(reg_func, Style.border.CENTER, "Registar funcionarios");
+			}
+			else {
+				reg_func_status = Login.janela.removeConteiner(reg_func);
+			}
+		}
+
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
 			//Utilitario.login_ref.janela.dispose();
 			Login.janela.dispose();
 			login = new Login();
 			login.start();
 		}
-
+		
 		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
 			Integer exit_status = JOptionPane.showConfirmDialog(login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
 
