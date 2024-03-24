@@ -188,17 +188,34 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 	int tentativas = 3;	
 	int i = 1;
 	private void login(String nome, String senha){
-		String id_db;
-		String nome_db;
-		String senha_db;
-		String funcao_db;
+		// String id_db;
+		// String nome_db;
+		// String senha_db;
+		// String funcao_db;
 
-		String sql = "SELECT * FROM utilizadores";
-
+		String sql = "SELECT * FROM utilizadores WHERE nome = ? OR id = ? AND senha = ?";
+		
 		try {
 			PreparedStatement ps = Conexao.getConexao().prepareStatement(sql);
-			ResultSet resultSet = ps.executeQuery(sql);
+			System.out.println("-----1");
+			ps.setString(1, nome);
+			ps.setString(2, nome);
+			ps.setString(3, senha);
+			System.out.println("-----2");
+			ResultSet resultSet = ps.executeQuery();
 
+			if(resultSet.next()){
+				System.out.println("-----3");
+				i = 2;
+				this.dispose();
+				janela = new Janela();
+				janela.start(resultSet.getString("funcao"));
+			}
+			else {
+				System.out.println("-----4");
+				i = -1;
+			}
+			/*
 			while (resultSet.next()) {
 				id_db = resultSet.getString("id");
 				nome_db = resultSet.getString("nome");
@@ -226,7 +243,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 
 					i = -1;
 				}
-			}
+			}*/
 
 			if(i == -1){
 				// System.out.println("not found");

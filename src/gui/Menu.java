@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import gui.estudante.ListaNominalEstudante;
 import gui.util.Style;
@@ -177,7 +178,11 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
-			System.exit(0);
+			Integer exit_status = JOptionPane.showConfirmDialog(login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
+
+			if(exit_status.equals(0)){
+				System.exit(0);
+			}
 		}
 	}
 }
