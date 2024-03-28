@@ -6,16 +6,20 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.Random;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import connection.Conexao;
+import gui.Login;
 import gui.util.Style;
 
 public class CadastrarFuncionario extends JPanel implements ActionListener{
@@ -122,8 +126,15 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
     private void save_data(String name, Integer age, String adress, String id_nr, String experience, String skills, String position){
 
         String id = "@";
+        Integer add_user_status = 0;
+        Integer add_func_stataus = 0;
         Random r = new Random();
+        Connection conn = Conexao.getConexao();
+        PreparedStatement ps_user = null;
+        PreparedStatement ps = null;
+        String query = "";
 
+        //generate the func id
         for(int i = 0; i < 8; i ++){
             if(i == 7){
                 id += "#";
@@ -133,29 +144,82 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
         }
 
         if(is_user.isSelected()){
+            String user_id = "@";
+            String password = "senha";
 
-        } else{
-            String query = "INSERT INTO funcionarios (id_funcionarios, nome, idade, identificacao, habilidades, experiencia_profissional, funcao) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            PreparedStatement ps = null;
-            try {
-                ps = Conexao.getConexao().prepareStatement(query);
-
-                ps.setString(1, id);
-                ps.setString(2, name);
-                ps.setInt(3, age);
-                ps.setString(4, id_nr);
-                ps.setString(5, skills);
-                ps.setString(6, experience);
-                ps.setString(7, position);
-
-                ps.execute();
-                
-            } catch (Exception e) {
-                System.out.println("Insert failed!!");
+            //generating the user and password id
+            for(int i = 0; i < 7; i ++){
+                if(i == 6){
+                    user_id += "q";
+                    password += r.nextInt(99);
+                }else{
+                    user_id += r.nextInt(9);
+                }
             }
 
+            query  = "INSERT INTO utilizadores (id_utilizador, nome, senha, funcao) VALUES (?, ?, ?, ?)";
+            
+            try {
+                ps_user = conn.prepareStatement(query);
+
+                ps_user.setString(1, user_id);
+                ps_user.setString(2, name);
+                ps_user.setString(3, password);
+                ps_user.setString(4, position);
+                
+                add_user_status = ps_user.executeUpdate();
+
+                ps_user.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+
+        query = "INSERT INTO funcionarios (id_funcionarios, nome, idade, identificacao, habilidades, experiencia_profissional, funcao) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        
+        try {
+            ps = conn.prepareStatement(query);
+
+            ps.setString(1, id);
+            ps.setString(2, name);
+            ps.setInt(3, age);
+            ps.setString(4, id_nr);
+            ps.setString(5, skills);
+            ps.setString(6, experience);
+            ps.setString(7, position);
+
+            add_func_stataus = ps.executeUpdate();
+            ps.close();
+
+            if(add_user_status == 1 && add_func_stataus == 1){
+
+                JOptionPane.showMessageDialog(Login.janela, "Funcionario e utilizador da aplicacao " + name + " cadastrado", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            else if(add_user_status == 0 && add_func_stataus == 1){
+                
+                JOptionPane.showMessageDialog(Login.janela, "Funcionario " + name + " cadastrado", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            else if(add_user_status == 1 && add_func_stataus == 0){
+                
+                JOptionPane.showMessageDialog(Login.janela, "Utilizador " + name + "cadastrado", "Sucesso!", JOptionPane.INFORMATION_MESSAGE);
+            }
+            
+            else if(add_func_stataus == 0){
+                
+                JOptionPane.showMessageDialog(Login.janela, "Nao foi possivel cadastrar funcionario", "Erro!", JOptionPane.ERROR_MESSAGE);
+            }
+
+            else if(add_user_status == 0){
+                
+                JOptionPane.showMessageDialog(Login.janela, "Nao foi possivel cadastrar utilizador", "Erro!", JOptionPane.ERROR_MESSAGE);
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Insert failed!!");
+        }
+
     }
 
     private void clear_form(JTextField[] text_field){
