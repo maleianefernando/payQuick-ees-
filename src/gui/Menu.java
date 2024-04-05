@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 
 import gui.estudante.ListaNominalEstudante;
 import gui.funcionario.CadastrarFuncionario;
+import gui.funcionario.ListaNominalFuncionario;
 import gui.util.Style;
 import xutil.Utilitario;
 
@@ -25,6 +26,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	private String[] side_bar_items = new String[] {"Menu"};	//
 	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Mensalidades", "Disciplinas Lecionadas", "Cadastrar"};	//items of the menu 'estudante'
 	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes", "Cadastrar"};	//items of the menu 'funcionario'
+	private String[] conta_items = new String[]{"Minha conta", "Logout", "Sair"};
 	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?", "Logout", "Sair"};	//items of the menu ajuda
 	
 	private JButton estudante_cadastrado, funcionario_cadastrado, cadastrar, turmas; 
@@ -32,9 +34,11 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	private JMenu side_bar;
 	private JMenu estudante;
 	public JMenu funcionario;
+	public JMenu conta;
 	private JMenu ajuda;
 	private JMenuItem[] est_JMenuItem = new JMenuItem[est_items.length];
 	private JMenuItem[] func_JMenuItem = new JMenuItem[func_items.length];
+	private JMenuItem[] conta_JMenuItem = new JMenuItem[conta_items.length];
 	private JMenuItem[] ajuda_JMenuItem = new JMenuItem[ajuda_items.length];
 	private JMenuItem[] side_JMenuItem = new JMenuItem[side_bar_items.length];
 	
@@ -78,6 +82,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
 		create_jmenu(funcionario, "Funcionario", Style.menu_font, func_JMenuItem, func_items);
+		create_jmenu(conta, "Conta", Style.menu_font, conta_JMenuItem, conta_items);
 		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
 		
 		jf.setJMenuBar(jmenu_bar);
@@ -87,6 +92,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	public void set_jmenu_bar(JFrame jf){
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
+		create_jmenu(conta, "Conta", Style.menu_font, conta_JMenuItem, conta_items);
 		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
 		
 		jf.setJMenuBar(jmenu_bar);
@@ -122,12 +128,14 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	int list_status = 0;
 	int add_status = 0;
 	int reg_func_status = 0;
+	int list_func_status = 0;
 	
 	Login login;
 
 	ListaNominalEstudante lista_est = new ListaNominalEstudante();
 
 	CadastrarFuncionario reg_func = new CadastrarFuncionario();
+	ListaNominalFuncionario list_func = new ListaNominalFuncionario();
 
 	@Override
 	public void actionPerformed(ActionEvent e){
@@ -165,6 +173,11 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			
 		}
 		
+		//monthly
+		else if(e.getSource().equals(est_JMenuItem[2])){
+			String pesq_nome = JOptionPane.showInputDialog(Login.janela, "Nome do esudante", "Pesquisar Mensalidades", JOptionPane.INFORMATION_MESSAGE);
+		}
+
 		//add students
 		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
 			
@@ -175,8 +188,16 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 				add_status = Login.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
 			}
 		}
+		else if(e.getSource().equals(func_JMenuItem[0])){	//List registered officers
+			if(list_func_status == 0 || list_func_status == -1){
+				list_func_status = Login.janela.addConteiner(list_func, Style.border.CENTER, "Listar funcionarios");
 
-		else if(e.getSource().equals(func_JMenuItem[3])){
+				list_func.start_list();
+			}else{
+				list_func_status = Login.janela.removeConteiner(list_func);
+			}
+		}
+		else if(e.getSource().equals(func_JMenuItem[3])){	//register a offical
 			if(reg_func_status == 0 || reg_func_status == -1){
 				reg_func_status = Login.janela.addConteiner(reg_func, Style.border.CENTER, "Registar funcionarios");
 			}

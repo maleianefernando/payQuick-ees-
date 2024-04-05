@@ -8,6 +8,7 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -22,13 +23,13 @@ import connection.Conexao;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 
+import gui.Login;
 import gui.util.Style;
 
 public class CadastrarEstudante extends JPanel implements ActionListener{
-	JScrollPane scroll = new JScrollPane(this);
-	GridLayout grid61 = new GridLayout(15,1);
+	public JScrollPane scroll = new JScrollPane(this);
+	GridLayout grid61 = new GridLayout(20,1);
 	
 	//form elements
 	JPanel[] panels;
@@ -39,8 +40,8 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	JPanel title_panel = new JPanel(Style.flow_center);
 	
 	//Items to the forms JLabel
-	String[] form_text = new String[] {"Nome Completo", "Idade", "Bairro", "Documento de identificacao", "Frequenta alguma instituicao de ensino?"};
-	String[] radio_text = new String[] {"Sim", "Não"};
+	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento", "Numero de celular", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nivel"};
+	String[] radio_text = new String[] {"M", "F"};
 	
 	//Radio button
 	JRadioButton[] radio_button;
@@ -53,6 +54,10 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	JLabel empty_label = new JLabel("");
 	
 	public CadastrarEstudante() {
+		this.start();
+	}
+	
+	public void start(){
 		panels = new JPanel[15];	//form_text.length+2
 		labels = new JLabel[form_text.length];
 		text_fields = new JTextField[form_text.length];
@@ -80,7 +85,6 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		//Adding select subject options
 		panels[6] = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 5));
 		panels[6].setBackground(Style.bg);
-		this.selectDisciplina(panels[6]);
 		
 		this.add(panels[6]);
 		
@@ -88,25 +92,30 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		this.addButtons(submit);
 		this.addButtons(clear);
 	}
-	
+
 	private void addPanel(JPanel[] panel, JLabel[] label, JTextField[] text_field){
 		
+		JPanel panel_title2 = new JPanel(Style.flow_center);
+		JLabel label_title2 = new JLabel("informacoes de emergencia".toUpperCase());
+
 		for(int i = 0; i < form_text.length; i++){
 
 			
-			label[i] = new JLabel(form_text[i]);
+			label[i] = new JLabel(form_text[i].toUpperCase());
 			label[i].setFont(Style.tf_font);
 				
-			if(i != 4){
+			if(i != 6){
 				text_field[i] = new JTextField(25);
 				text_field[i].setFont(Style.tf_font);
 				
 				
 			}
-			else if( i == 4){
+			else if( i == 6){
+
+
+
 				for(int k = 0; k < radio_text.length; k++){
-					
-					
+
 					radio_button[k] = new JRadioButton(radio_text[k]);
 					radio_button[k].setBackground(Style.bg);
 					radio_button[k].setFocusable(false);
@@ -124,7 +133,18 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 				panel[i].add(text_field[i]);
 				
 			} catch(NullPointerException e){
-			
+				JPanel jp = new JPanel();
+				jp.setBackground(Style.bg);
+
+				label_title2.setFont(new Font("Consolas", Font.BOLD, 22));
+				label_title2.setForeground(Style.fg);
+
+				panel_title2.setBackground(Style.bg);
+				panel_title2.add(label_title2);
+				
+				this.add(jp);
+				this.add(panel_title2);
+				
 				panel[i].add(radio_button[0]);
 				panel[i].add(radio_button[1]);
 				
@@ -157,37 +177,6 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		
 	}
 	
-	private String[] __nivel = new String[] {"Ensino Superior", "Ensino Secundario", "Ensino Medio", "Outro"};
-	private JRadioButton[] nivel = new JRadioButton[__nivel.length];
-	private ButtonGroup button_group = new ButtonGroup();
-	
-	private void setNivelActual(JPanel panel){
-		for(int i = 0; i < __nivel.length; i++){
-		
-			nivel[i] = new JRadioButton(__nivel[i]);
-			nivel[i].setFocusable(false);
-			nivel[i].setBackground(Style.bg);
-			nivel[i].setFont(Style.tf_font);
-			
-			panel.add(nivel[i]);
-			button_group.add(nivel[i]);
-		}
-	}
-	
-	private String[] __disciplina = new String[] {"Português", "Matemática", "Inglês", "Filosofia", "História", "Geografia", "Quimica", "Biologia", "Física"};
-	private JCheckBox[] disciplina = new JCheckBox[__disciplina.length];
-	
-	private void selectDisciplina(JPanel panel){
-		
-		for(int i = 0; i < __disciplina.length; i++){
-			disciplina[i] = new JCheckBox(__disciplina[i]);
-			disciplina[i].setBackground(Style.bg);
-			disciplina[i].setFont(Style.tf_font);
-			
-			panel.add(disciplina[i]);
-		}
-	}
-	
 	int status_nivel = 0;
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(submit)){
@@ -200,43 +189,57 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 			}
 
 			String nome = text_fields[0].getText();
-			Integer idade = 0;
-			try{
-				idade = Integer.parseInt(text_fields[1].getText());
-			} catch (NumberFormatException ex){
-				if(text_fields[1].getText().equals("")){
-					
-				}
-				else{
-					JOptionPane.showMessageDialog(null, "Insira um valor numerico para a idade", "ERRO!", JOptionPane.ERROR_MESSAGE);
-				}
-			}
+			String morada = text_fields[1].getText();
 			String bairro = text_fields[2].getText();
-			String identificacao = text_fields[3].getText();
-			
-			String sql = "INSERT INTO estudantes (ID, NOME, IDADE, BAIRRO, IDENTIFICACAO_NR, OCUPACAO, DISCIPLINAS) VALUES (?, ?, ?, ?, ?, ?, ?)";
+			String email = text_fields[3].getText();
+			String data_nascimeto = text_fields[4].getText();
+			String numero_celular = text_fields[5].getText();
+			String sexo = "";
+			String contacto_emergencia = text_fields[7].getText();
+			String nome_emergencia = text_fields[8].getText();
+			String nr_celular_emergencia = text_fields[9].getText();
+			String nivel = text_fields[10].getText();
+
+			Time horario = new Time(130000);
+
+			java.util.Date date = new java.util.Date();
+			java.sql.Date data_matricula = new java.sql.Date(date.getTime());
+
+			if(radio_button[0].isSelected()){
+				sexo = radio_button[0].getText();
+			}
+			else if (radio_button[1].isSelected()){
+				sexo = radio_button[1].getText();
+			}
+
+			String query = "INSERT INTO estudante (id_estudante, nome_completo, morada, bairro, email, data_nascimento, numero_celular, sexo, nivel, horario, data_matricula) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement ps = null;
 
 			try{
-				ps = Conexao.getConexao().prepareStatement(sql);
+				ps = Conexao.getConexao_ees().prepareStatement(query);
 				
 				ps.setString(1, id);
 				ps.setString(2, nome);
-				ps.setInt(3, idade);
+				ps.setString(3, morada);
 				ps.setString(4, bairro);
-				ps.setString(5, identificacao);
-				ps.setString(6, "ocupacao");
-				ps.setString(7, "disciplinas");
+				ps.setString(5, email);
+				ps.setString(6, data_nascimeto);
+				ps.setString(7, "+258"+numero_celular);
+				ps.setString(8, sexo);
+				ps.setString(9, nivel);
+				ps.setTime(10, horario);
+				ps.setDate(11, data_matricula);
+
 
 				try {
-					ps.execute();
-					JOptionPane.showMessageDialog(null, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
-					
-					System.out.println(ps);
-					System.out.println(sql);
+						if(ps.executeUpdate() == 1){
+							JOptionPane.showMessageDialog(Login.janela, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
+						}
+					// System.out.println(ps);
+					// System.out.println(query);
 
 				} catch (Exception ex) {
-					JOptionPane.showMessageDialog(null, "Numero de digitos execedido", "Erro", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, ex, "Erro", JOptionPane.INFORMATION_MESSAGE);
 				}
 				ps.close();
 			}
@@ -252,25 +255,10 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		
 		else if(e.getSource().equals(radio_button[0])){
 			
-			if(status_nivel != 1){
-				this.setNivelActual(panels[5]);
-				
-				panels[5].revalidate();
-				panels[5].repaint();
-				
-				status_nivel = 1;
-			}
 		}
 		
 		else if(e.getSource().equals(radio_button[1])){
-			status_nivel = -1;
-			
-			for(int i = 0; i < __nivel.length; i++){
-				panels[5].remove(nivel[i]);
-			}
-			
-			panels[5].revalidate();
-			panels[5].repaint();
+
 		}
 	}
 }

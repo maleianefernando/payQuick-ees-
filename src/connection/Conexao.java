@@ -10,6 +10,7 @@ public class Conexao {
     public static String password = "";
 
     public static Connection conn;
+    public static Connection ees_conn;
 
     public Conexao(){
 
@@ -35,6 +36,30 @@ public class Conexao {
         } catch(SQLException e) {
             System.out.println("connection failled!!!");
             e.printStackTrace();
+            return null;
+        }
+
+    }
+
+
+    public static Connection getConexao_ees(){
+
+        try {
+            if(ees_conn == null){
+                ees_conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/emmanuel_english_school", user, password);
+
+                System.out.println("emmanuel engish school database connected");
+
+                return ees_conn;
+            }
+            else{
+                return ees_conn;
+            }
+        } catch (SQLException e) {
+            System.out.println("cannot connect to the emmanuel ensglish school database");
+            System.out.println(e);
+
+            
             return null;
         }
     }
