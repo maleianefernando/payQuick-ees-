@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.Month;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -42,7 +43,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	//Items to the forms JLabel
 	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nivel"};
 	String[] radio_text = new String[] {"M", "F"};
-	String[] nivel_text = {"Nivel 1", "Nivel 2", "Nivel 3","Nivel 4"};
+	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)"};
 	
 	//Radio button
 	JRadioButton[] radio_button;
@@ -102,7 +103,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		JLabel label_title2 = new JLabel("informacoes de emergencia".toUpperCase());
 
 		for(int i = 0; i < form_text.length; i++){
-			System.out.println("i = " + i + " = " + form_text[i]);
+			//System.out.println("i = " + i + " = " + form_text[i]);
 			
 			label[i] = new JLabel(organize_string(form_text[i]).toUpperCase());
 			label[i].setFont(Style.tf_font);
@@ -157,9 +158,9 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 			}
 
 			if(i == 10) {
-				System.out.println(i);
+				//System.out.println(i);
 				for(int j = 0; j < nivel_text.length; j++){
-					System.out.println(i);
+					//System.out.println(i);
 					nivel_radio[j] = new JRadioButton(nivel_text[j]);
 					nivel_radio[j].setBackground(Style.bg);
 					nivel_radio[j].setFocusable(false);
@@ -223,6 +224,8 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	}
 	
 	int status_nivel = 0;
+	Double preco = 0.0;
+
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(submit)){
 			System.out.println("Salvar..");
@@ -245,9 +248,22 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 			String nr_celular_emergencia = text_fields[9].getText();
 			String nivel = "";
 
-			for(int i =0; i< nivel_text.length; i++){
+			for(int i = 0; i< nivel_text.length; i++){
 				if(nivel_radio[i].isSelected()){
 					nivel = nivel_radio[i].getText();
+
+					if(i == 0){
+						preco = 625.00;
+					}
+					else if(i == 1){
+						preco = 725.00;
+					}
+					else if(i == 2){
+						preco = 925.00;
+					}
+					else if(i == 3){
+						preco = 1025.00;
+					}
 				}
 			}
 
@@ -267,8 +283,11 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 
 			String emergencia_query = "INSERT INTO emergencia (id_estudante, contacto_emergencia, nome_completo, numero_celular) VALUES (?, ?, ?, ?)";
 
+			String mensalidade_query = "INSERt INTO mensalidade (id_estudante, mes, status, divida) VALUES (?, MONTH(NOW()), ?, ?)";
+
 			PreparedStatement ps = null;
 			PreparedStatement ps_em = null;
+			PreparedStatement ps_mens = null;
 
 			try{
 				ps = Conexao.getConexao_ees().prepareStatement(query);
@@ -286,7 +305,6 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 				ps.setDate(11, data_matricula);
 
 
-
 				ps_em = Conexao.getConexao_ees().prepareStatement(emergencia_query);
 				
 				ps_em.setString(1, id);
@@ -294,14 +312,22 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 				ps_em.setString(3, nome_emergencia);
 				ps_em.setString(4, "+258"+nr_celular_emergencia);
 
+
+				ps_mens = Conexao.getConexao_ees().prepareStatement(mensalidade_query);
+				ps_mens.setString(1, id);
+				ps_mens.setString(2, "nao pago");
+				ps_mens.setDouble(3, preco);
+
 				try {
-						if(ps.executeUpdate() == 1 && ps_em.executeUpdate() == 1){
-							JOptionPane.showMessageDialog(Login.janela, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
-						}
+					if(ps.executeUpdate() == 1 && ps_em.executeUpdate() == 1 && ps_mens.executeUpdate() == 1){
+						JOptionPane.showMessageDialog(Login.janela, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
+					}
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex, "Erro", JOptionPane.INFORMATION_MESSAGE);
-				}
+				}// catch (com.mysql.cj.jdbc.exceptions.MysqlDataTruncation ex2){
+				// 	JOptionPane.showMessageDialog(null, "Data de nascimento invalida", "Erro", JOptionPane.INFORMATION_MESSAGE);
+				// }
 
 				ps.close();
 				ps_em.close();

@@ -24,7 +24,11 @@ public class Style {
 	public static Color tf_fg = new Color(0x123456);	//text-field forground - blue
 	public static Color label_fg = new Color(0x000000);	//label text-field - black
 	public static Color blue = new Color(0x3960a1);	//button background
-	
+	public static Color jmenu_bar_bg = new Color(0xedbe39);
+	public static Color table_bg = new Color(0x86c4c1);
+	public static Color btn_click_bg = new Color(0x377685);
+	public static Color btn_bg = new Color(0x039e18);
+	public static Font btn_font = new Font("Consolas", Font.PLAIN, 20);
 	public Style(){
 		
 	}

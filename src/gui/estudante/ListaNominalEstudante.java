@@ -1,9 +1,14 @@
 package gui.estudante;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 //import java.awt.GridLayout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,12 +27,15 @@ import javax.swing.JTable;
 
 import gui.util.Style;
 
-public class ListaNominalEstudante extends JPanel  implements ActionListener {
+public class ListaNominalEstudante extends JPanel  implements ActionListener, MouseListener {
 	//private GridLayout grid21 = new GridLayout(2, 3);
 	private JTable table;
 	private JScrollPane table_scroll;
 	private JButton save;
 	
+	private JPanel header, title_panel;
+	private JLabel title;
+
 	String[] table_columns = new String[] {"ID", "Nome Completo", "Bairro", "Email", "Data de nascimento", "Sexo", "Celular", "Nivel", "Horario"};
 
 	Object[][] table_data;
@@ -47,22 +55,53 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 		this.select_from_database();
 		
 		this.create_table();
-		this.add(new JLabel("            "), BorderLayout.NORTH);
-		this.add(new JLabel("            "), BorderLayout.EAST);
+		this.setHeader();
 		this.add(table_scroll, BorderLayout.CENTER);
-		this.add(new JLabel("            "), BorderLayout.WEST);
 
 		save = new JButton("Salvar alterações");
-		save.setBackground(Style.tf_fg);
+		save.setFont(Style.btn_font);
+		save.setPreferredSize(new Dimension(300, 50));
+		save.setBackground(Style.btn_bg);
 		save.setForeground(Style.tf_bg);
+		save.setFocusable(false);
 		save.addActionListener(this);
+		save.addMouseListener(this);
 
 		JPanel footer = new JPanel(Style.flow_center);
 		footer.setBackground(Style.bg);
+		footer.setPreferredSize(new Dimension(0, 100));
 		footer.add(save);
 
 		this.add(footer, BorderLayout.SOUTH);
 	}
+
+	private void setHeader(){
+        header = new JPanel(new GridLayout(3, 3));
+        header.setBackground(Style.bg);
+
+        title = new JLabel("Lista Nominal".toUpperCase());
+        title.setFont(new Font("Consolas", Font.BOLD, 30));
+        title.setForeground(new Color(0x039e18));
+
+        title_panel = new JPanel(Style.flow_center);
+        title_panel.setBackground(Style.bg);
+        title_panel.add(title);
+
+        header.add(new JLabel("")); //1x1
+        header.add(new JLabel("")); //1x2
+        header.add(new JLabel("")); //1x3
+        header.add(new JLabel("")); //2x1
+        header.add(title_panel); //2x2
+        header.add(new JLabel("")); //2x3
+        header.add(new JLabel("")); //3x1
+        header.add(new JLabel("")); //3x2
+        header.add(new JLabel("")); //3x3
+
+        this.add(new JLabel("            "), BorderLayout.WEST);
+		this.add(new JLabel("            "), BorderLayout.EAST);
+
+        this.add(header, BorderLayout.NORTH);
+    }
 
 	public void create_table(){
 		//table model
@@ -72,7 +111,7 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 		add_columns(model, table_columns);
 		add_row(model, table_data);
 		table = new JTable(model);
-		table.setBackground(Style.bg);
+		table.setBackground(Style.table_bg);
 		
 		//update table
 		model.fireTableDataChanged();
@@ -88,7 +127,7 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 		table_scroll.revalidate();
 		table_scroll.repaint();
 		//table_scroll.setBackground(Color.red);
-		System.out.println("table created" + "\n" + table_data);
+		//System.out.println("table created" + "\n" + table_data);
 	}
 	
 	private void add_columns(DefaultTableModel model, String[] columns){
@@ -101,7 +140,6 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 		for(int i = 0; i < rows.length; i++){
 			model.addRow(rows[i]);
 		}
-		System.out.println("adding row");
 	}
 
 
@@ -142,7 +180,7 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 						i++;
 						
 					}
-					System.out.println("select query");
+					//System.out.println("select query");
 					//JOptionPane.showMessageDialog(null, "Visualizando!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception ex) {
@@ -161,5 +199,30 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener {
 		if(e.getSource().equals(save)){
 			
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
 	}
 }

@@ -1,11 +1,17 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JPanel;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
@@ -14,12 +20,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import gui.estudante.ListaNominalEstudante;
+import gui.estudante.Mensalidades;
 import gui.funcionario.CadastrarFuncionario;
 import gui.funcionario.ListaNominalFuncionario;
 import gui.util.Style;
 import xutil.Utilitario;
 
-public class Menu extends JPanel implements ActionListener, Utilitario{
+public class Menu extends JPanel implements ActionListener, MouseListener, Utilitario{
 	public JPanel panel_menu = new JPanel();
 
 	//side bar JMenuIems titles
@@ -47,6 +54,10 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		this.setBackground(Style.blue);
 		this.setVisible(true);
 		
+		jmenu_bar.setPreferredSize(new Dimension(0, 50));
+		jmenu_bar.add(Box.createHorizontalGlue());
+		jmenu_bar.setBackground(Style.jmenu_bar_bg);
+
 		botoes(estudante_cadastrado, "Estudante Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft);
 		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft);
@@ -103,6 +114,9 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		jm = new JMenu(jm_txt);
 		jm.setFont(ft);
 		jm.setMnemonic(jm_txt.charAt(0));
+		jm.setPreferredSize(new Dimension(100, 0));
+		jm.setLayout(new FlowLayout(FlowLayout.CENTER));
+		//jm.addMouseListener(this);
 		jmenu_bar.add(jm);
 		
 		for(int i = 0; i < jm_item.length; i++){
@@ -121,6 +135,7 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			
 			//Adding ActionListeners to all JMenuItems
 			jm_item[i].addActionListener(this);
+			
 		}
 	}
 	
@@ -129,10 +144,13 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 	int add_status = 0;
 	int reg_func_status = 0;
 	int list_func_status = 0;
+	int mens_status = 0;
+
 	
 	Login login;
 
 	ListaNominalEstudante lista_est = new ListaNominalEstudante();
+	Mensalidades mensalidade;
 
 	CadastrarFuncionario reg_func = new CadastrarFuncionario();
 	ListaNominalFuncionario list_func = new ListaNominalFuncionario();
@@ -145,12 +163,12 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 			
 			
 			if(side_status == -1 || side_status == 0){
-				side_status = Login.janela.addConteiner(Utilitario.menu_ref, Style.border.WEST, "Menu");
+				side_status = Login.janela.addMenuSide(Utilitario.menu_ref, BorderLayout.WEST, "Menu");
 				//System.out.println("menu removido,  status: " + side_status);
 				
 			}
 			else{
-				side_status = Login.janela.removeConteiner(Login.janela.menu_ref);
+				side_status = Login.janela.removeConteiner(Utilitario.menu_ref);
 				//System.out.println("menu adicionado,  status: " + side_status);
 				
 			}
@@ -160,50 +178,70 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		else if(e.getSource().equals(est_JMenuItem[0])){
 
 			// System.out.println(e.getSource().equals(estudante_cadastrado));
-			if(list_status == 0 || list_status == -1){
+			// if(list_status == 0 || list_status == -1){
 				lista_est = new ListaNominalEstudante();
-				list_status = Login.janela.addConteiner(lista_est, Style.border.CENTER, "Lista Nominal De Estudantes");
+				list_status = Login.janela.addConteiner(lista_est, BorderLayout.CENTER, "Lista Nominal De Estudantes");
 
 				lista_est.start_list();
-			}
-			else {
-				list_status = Login.janela.removeConteiner(lista_est);
-				lista_est.fill_table_status = -1;
-			}
+				side_status = -1;
+			// }
+			// else {
+			// 	list_status = Login.janela.removeConteiner(lista_est);
+			// 	lista_est.fill_table_status = -1;
+			// }
 			
 		}
 		
 		//monthly
 		else if(e.getSource().equals(est_JMenuItem[2])){
-			String pesq_nome = JOptionPane.showInputDialog(Login.janela, "Nome do esudante", "Pesquisar Mensalidades", JOptionPane.INFORMATION_MESSAGE);
+			// String pesq_nome = JOptionPane.showInputDialog(Login.janela, "Nome do esudante", "Pesquisar Mensalidades", JOptionPane.INFORMATION_MESSAGE);
+
+			// if(mens_status == 0 || mens_status == -1){
+				mensalidade = new Mensalidades();
+				Login.janela.addConteiner(mensalidade, BorderLayout.CENTER, "Controlo de mensalidades");
+
+				mensalidade.start_table();
+				
+				side_status = -1;
+			// }
+			// else {
+			// 	mens_status = Login.janela.removeConteiner(mensalidade);
+			// }
+			//Login.janela.getContentPane().removeAll();
 		}
 
 		//add students
 		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
 			
-			if(add_status == 0 || add_status == -1){
-				add_status = Login.janela.addConteiner(Utilitario.cadastrar_estudante_ref, Style.border.CENTER, "Cadastrar Estudantes");
-			}
-			else {
-				add_status = Login.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
-			}
+//			if(add_status == 0 || add_status == -1){
+				add_status = Login.janela.addConteiner(Utilitario.cadastrar_estudante_ref, BorderLayout.CENTER, "Cadastrar Estudantes");
+
+				side_status = -1;
+			// }
+			// else {
+			// 	add_status = Login.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
+			// }
 		}
 		else if(e.getSource().equals(func_JMenuItem[0])){	//List registered officers
-			if(list_func_status == 0 || list_func_status == -1){
-				list_func_status = Login.janela.addConteiner(list_func, Style.border.CENTER, "Listar funcionarios");
+//			if(list_func_status == 0 || list_func_status == -1){
+				list_func_status = Login.janela.addConteiner(list_func, BorderLayout.CENTER, "Listar funcionarios");
 
 				list_func.start_list();
-			}else{
-				list_func_status = Login.janela.removeConteiner(list_func);
-			}
+
+				side_status = -1;
+			// }else{
+			// 	list_func_status = Login.janela.removeConteiner(list_func);
+			// }
 		}
 		else if(e.getSource().equals(func_JMenuItem[3])){	//register a offical
-			if(reg_func_status == 0 || reg_func_status == -1){
-				reg_func_status = Login.janela.addConteiner(reg_func, Style.border.CENTER, "Registar funcionarios");
-			}
-			else {
-				reg_func_status = Login.janela.removeConteiner(reg_func);
-			}
+			// if(reg_func_status == 0 || reg_func_status == -1){
+				reg_func_status = Login.janela.addConteiner(reg_func, BorderLayout.CENTER, "Registar funcionarios");
+
+				side_status = -1;
+			// }
+			// else {
+			// 	reg_func_status = Login.janela.removeConteiner(reg_func);
+			// }
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
@@ -214,12 +252,42 @@ public class Menu extends JPanel implements ActionListener, Utilitario{
 		}
 		
 		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
-			Integer exit_status = JOptionPane.showConfirmDialog(login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
+			Integer exit_status = JOptionPane.showConfirmDialog(Login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
 
 			if(exit_status.equals(0)){
 				System.exit(0);
 			}
 		}
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+		
+	}
+
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+
+	}
+
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+
 	}
 }
 

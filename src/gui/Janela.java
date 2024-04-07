@@ -10,7 +10,7 @@ public class Janela extends JFrame implements Utilitario{
 	//public Menu menu = Utilitario.menu_ref;
 	public Menu menu = new Menu();
 	//public JFrame frame = new JFrame();
-	private String __title = "Turma Dos Revoltados";
+	private String __title = "Emmanuel Enlgish School";
 	
 	public Janela (){
 		
@@ -49,57 +49,10 @@ public class Janela extends JFrame implements Utilitario{
 		this.revalidate();
 		this.repaint();
 	}
-	
-	/*
-	public int addMenuSide(){
-		this.getContentPane().add(menu, Style.border.WEST);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return 1;
-	}
-	
-	public int removeMenuSide(){
-		this.getContentPane().remove(menu);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return -1;
-	}
-	
-	public int addListaEstudante(){
-		this.getContentPane().add(lista_estudante, Style.border.CENTER);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return 1;
-	}
-	
-	public int removeListaEstudante(){
-		this.getContentPane().remove(lista_estudante);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return -1;
-	}
-	
-	public int addCadastrarEstudante(){
-		this.getContentPane().add(Utilitario.cadastrar_estudante_ref, Style.border.CENTER);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return 1;
-	}
-	
-	public int removeCadastrarEstudante(){
-		this.getContentPane().remove(Utilitario.cadastrar_estudante_ref);
-		this.getContentPane().revalidate();
-		this.getContentPane().repaint();
-		
-		return -1;
-	}
-	*/
+
 	public int addConteiner(JPanel panel, String layout, String title){
+		this.getContentPane().removeAll();
+
 		this.setTitle(this.__title + " - " + title);
 		this.getContentPane().add(panel, layout);
 		this.getContentPane().revalidate();
@@ -108,6 +61,16 @@ public class Janela extends JFrame implements Utilitario{
 		return 1;		
 	}
 	
+	public int addMenuSide(JPanel panel, String layout, String title){
+
+		this.setTitle(this.__title + " - " + title);
+		this.getContentPane().add(panel, layout);
+		this.getContentPane().revalidate();
+		this.getContentPane().repaint();
+		
+		return 1;		
+	}
+
 	public int removeConteiner(JPanel panel){
 		this.setTitle(__title);
 		this.getContentPane().remove(panel);
