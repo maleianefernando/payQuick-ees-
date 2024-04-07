@@ -179,7 +179,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		conteiner.setBackground(new Color(0xf2701a));
 		conteiner.add(left_conteiner);
 		conteiner.add(cadastro);
-		this.add(conteiner, border.CENTER);
+		this.add(conteiner, BorderLayout.CENTER);
 		cadastro.validate();
 		cadastro.setBackground(new Color(0xf2701a));
 	}
