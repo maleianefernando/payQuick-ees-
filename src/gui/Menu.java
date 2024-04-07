@@ -244,6 +244,14 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			// }
 		}
 
+		else if(e.getSource().equals(ajuda_JMenuItem[0])){
+			JOptionPane.showMessageDialog(Login.janela, "Esta funcionalidade ainda está em desenvolvimento", "Ajuda", JOptionPane.INFORMATION_MESSAGE);
+		}
+
+		else if(e.getSource().equals(ajuda_JMenuItem[1])){	//About us
+			JOptionPane.showMessageDialog(Login.janela, "Somos a Emmanuel English School, uma escola especializada em ensinar a lingua inglesa atravês de métodos funcionais e eficazes", "Quem Somos Nós?", JOptionPane.INFORMATION_MESSAGE);
+		}
+
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
 			//Utilitario.login_ref.janela.dispose();
 			Login.janela.dispose();

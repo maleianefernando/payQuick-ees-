@@ -6,9 +6,13 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.MonthDay;
+import java.time.Year;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 
@@ -23,11 +27,12 @@ import connection.Conexao;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 import gui.Login;
 import gui.util.Style;
 
-public class CadastrarEstudante extends JPanel implements ActionListener{
+public class CadastrarEstudante extends JPanel implements ActionListener, MouseListener{
 	public JScrollPane scroll = new JScrollPane(this);
 	GridLayout grid61 = new GridLayout(20,1);
 	
@@ -35,14 +40,18 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 	JPanel[] panels;
 	JLabel[] labels;
 	JTextField[] text_fields;
+	JComboBox<String> year_jcomboBox, month_jcomboBox, day_jcomboBox;
+	JComboBox<String> nivel_combo;
+
+	String[] year, month, day;
 	
 	JLabel title = new JLabel("MATRICULAR ESTUDANTES");
 	JPanel title_panel = new JPanel(Style.flow_center);
 	
 	//Items to the forms JLabel
-	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nivel"};
+	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento (DD/MM/AAAA)", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nível "};
 	String[] radio_text = new String[] {"M", "F"};
-	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)"};
+	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicíclio", "Aulas online"};
 	
 	//Radio button
 	JRadioButton[] radio_button;
@@ -158,31 +167,101 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 
 			if(i == 10) {
 				//System.out.println(i);
-				for(int j = 0; j < nivel_text.length; j++){
-					//System.out.println(i);
-					nivel_radio[j] = new JRadioButton(nivel_text[j]);
-					nivel_radio[j].setBackground(Style.bg);
-					nivel_radio[j].setFocusable(false);
-					nivel_radio[j].setFont(Style.tf_font);
-					nivel_radio[j].setForeground(Style.fg);
+				nivel_combo = new JComboBox<>(nivel_text);
+				nivel_combo.setPreferredSize(new Dimension(150, 30));
 
-					nivel_radio[j].addActionListener(this);
+				nivel_combo.setBackground(Style.tf_bg);
+				nivel_combo.setFont(Style.tf_font);
+				nivel_combo.addMouseListener(this);
+				// for(int j = 0; j < nivel_text.length; j++){
+					//System.out.println(i);
+					// nivel_radio[j] = new JRadioButton(nivel_text[j]);
+					// nivel_radio[j].setBackground(Style.bg);
+					// nivel_radio[j].setFocusable(false);
+					// nivel_radio[j].setFont(Style.tf_font);
+					// nivel_radio[j].setForeground(Style.fg);
+
+					// nivel_radio[j].addActionListener(this);
+
 					
-				}
+					
+				// }
 				
 				panel[i].remove(text_field[i]);
-				panel[i].remove(label[i]);
-				
+				// panel[i].remove(label[i]);
+				panel[i].add(nivel_combo);
+
 				JPanel pn = new JPanel();
 				pn.setBackground(Style.bg);
 				//this.add(pn);
 				
-				nivel_g = new ButtonGroup();
+				// nivel_g = new ButtonGroup();
 				
-				for(int l = 0; l < nivel_text.length; l++){
-					nivel_g.add(nivel_radio[l]);
-					panel[i].add(nivel_radio[l]);
-				}
+				// for(int l = 0; l < nivel_text.length; l++){
+				// 	nivel_g.add(nivel_radio[l]);
+				// 	panel[i].add(nivel_radio[l]);
+				// }
+			}
+
+			Dimension jcombo_dimension = new Dimension(70, 30);
+			if(i == 4){
+				panel[i].remove(text_field[i]);
+
+				year_jcomboBox = new JComboBox<>();
+				year_jcomboBox.setPreferredSize(jcombo_dimension);
+				year_jcomboBox.setBackground(Style.tf_bg);
+				year_jcomboBox.setFont(Style.tf_font);
+				year_jcomboBox.addMouseListener(this);
+
+				month_jcomboBox = new JComboBox<>();
+				month_jcomboBox.setPreferredSize(jcombo_dimension);
+				month_jcomboBox.setBackground(Style.tf_bg);
+				month_jcomboBox.setFont(Style.tf_font);
+				month_jcomboBox.addMouseListener(this);
+
+				day_jcomboBox = new JComboBox<>();
+				day_jcomboBox.setPreferredSize(jcombo_dimension);
+				day_jcomboBox.setBackground(Style.tf_bg);
+				day_jcomboBox.setFont(Style.tf_font);
+				day_jcomboBox.addMouseListener(this);
+
+				Year year = Year.now();
+				MonthDay month = MonthDay.of(1,1);
+
+				int day = 1;
+				do {
+					if(day<10){
+						day_jcomboBox.addItem("0" + day);	
+					}else{
+						day_jcomboBox.addItem("" + day);
+					}
+					day++;
+
+				} while (day <= 31);
+				panel[i].add(day_jcomboBox);
+
+				do {
+					if(month.getMonthValue() < 10){
+						month_jcomboBox.addItem("0" + month.getMonthValue());
+					}else{
+						month_jcomboBox.addItem("" + month.getMonthValue());
+					}
+					
+					try{
+						month = MonthDay.of(month.getMonthValue()+1, 1);
+					} catch (java.time.DateTimeException e){
+						break;
+					}
+				} while (month.getMonthValue() <= 12);
+				panel[i].add(month_jcomboBox);
+			
+				do{
+					year_jcomboBox.addItem(year.getValue() + "");
+					year = Year.of(year.getValue()-1);
+
+				}while(year.getValue() >= Year.of(1960).getValue());
+				panel[i].add(year_jcomboBox);
+
 			}
 			
 			panel[i].setPreferredSize(new Dimension(200, 50));
@@ -227,6 +306,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(submit)){
+
 			System.out.println("Salvar..");
 			String id = "est_";
 			Random r = new Random();
@@ -239,7 +319,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 			String morada = text_fields[1].getText();
 			String bairro = text_fields[2].getText();
 			String email = text_fields[3].getText();
-			String data_nascimeto = text_fields[4].getText();
+			String data_nascimeto = year_jcomboBox.getSelectedItem()+"-"+month_jcomboBox.getSelectedItem()+"-"+day_jcomboBox.getSelectedItem();
 			String numero_celular = text_fields[5].getText();
 			String sexo = "";
 			String contacto_emergencia = text_fields[7].getText();
@@ -322,6 +402,9 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 						JOptionPane.showMessageDialog(Login.janela, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
 					}
 
+				} catch (com.mysql.cj.jdbc.exceptions.MysqlDataTruncation ex){
+					JOptionPane.showMessageDialog(null, "Por favor verifique a data de nascimento", "Erro", JOptionPane.INFORMATION_MESSAGE);
+
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex, "Erro", JOptionPane.INFORMATION_MESSAGE);
 				}// catch (com.mysql.cj.jdbc.exceptions.MysqlDataTruncation ex2){
@@ -348,5 +431,30 @@ public class CadastrarEstudante extends JPanel implements ActionListener{
 		else if(e.getSource().equals(radio_button[1])){
 
 		}
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent arg0) {
+
+	}
+
+	@Override
+	public void mousePressed(MouseEvent arg0) {
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent arg0) {
+
 	}
 }

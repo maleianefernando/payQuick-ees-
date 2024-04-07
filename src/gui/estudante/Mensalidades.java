@@ -191,29 +191,37 @@ public class Mensalidades  extends JPanel implements ActionListener{
 
                         ps.setString(1, id_est);
 
-                         divida = ps.executeQuery();
+                        divida = ps.executeQuery();
                         divida.next();
 
-                        Integer valor = 0;
+                        Double valor = 0.0;
                         int r = 0;
                         String title_joption = "Pagar mensalidade";
                         do{
                             if(r == 1){
                                 title_joption = "ERRO! Tentar novamente";
                             }
-                            valor = Integer.parseInt(JOptionPane.showInputDialog(Login.janela, "Valor da mensalidade?", title_joption, JOptionPane.INFORMATION_MESSAGE));
-                            r = 1;
-
-                        }while(divida.getInt(1) != valor);
+                            if(divida.getDouble(1) == 0.0){
+                                JOptionPane.showMessageDialog(Login.janela, "A situação financeira do estudante está regularizada", "Mensalidade", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else{
+                                try{
+                                    valor = Double.parseDouble(JOptionPane.showInputDialog(Login.janela, "Valor da mensalidade?", title_joption, JOptionPane.YES_NO_OPTION));
+                                r = 1;
+                                } catch(NullPointerException nullPointer){
+                                    System.out.println(nullPointer);
+                                }
+                            }
+                        }while(divida.getDouble(1) != valor);
 
                         
-                        ps = Conexao.getConexao_ees().prepareStatement("UPDATE mensalidade SET divida = ? WHERE  id_estudante = ?");
+                        ps = Conexao.getConexao_ees().prepareStatement("UPDATE mensalidade SET divida = ?, status = 'pago' WHERE  id_estudante = ?");
 
-                        ps.setDouble(1, divida.getInt(1) - valor);
+                        ps.setDouble(1, divida.getDouble(1) - valor);
                         ps.setString(2, id_est);
 
                         if(ps.executeUpdate() == 1){
-                            JOptionPane.showConfirmDialog(Login.janela, "Sucesso!!!", "Mensalidade suprida com sucesso", JOptionPane.OK_OPTION);
+                            JOptionPane.showConfirmDialog(Login.janela, "Sucesso!!!", "Mensalidade suprida com sucesso", JOptionPane.YES_OPTION);
                         }
                         else {
                             JOptionPane.showConfirmDialog(Login.janela, "ERRO!", "Não foi possivel atualizar a base de dados", JOptionPane.OK_OPTION);
