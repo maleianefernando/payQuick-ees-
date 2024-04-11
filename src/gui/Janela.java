@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -50,7 +51,7 @@ public class Janela extends JFrame implements Utilitario{
 		this.repaint();
 	}
 
-	public int addConteiner(JPanel panel, String layout, String title){
+	public int addConteiner(JComponent panel, String layout, String title){
 		this.getContentPane().removeAll();
 
 		this.setTitle(this.__title + " - " + title);
@@ -61,7 +62,7 @@ public class Janela extends JFrame implements Utilitario{
 		return 1;		
 	}
 	
-	public int addMenuSide(JPanel panel, String layout, String title){
+	public int addMenuSide(JComponent panel, String layout, String title){
 
 		this.setTitle(this.__title + " - " + title);
 		this.getContentPane().add(panel, layout);
@@ -71,7 +72,7 @@ public class Janela extends JFrame implements Utilitario{
 		return 1;		
 	}
 
-	public int removeConteiner(JPanel panel){
+	public int removeConteiner(JComponent panel){
 		this.setTitle(__title);
 		this.getContentPane().remove(panel);
 		this.getContentPane().revalidate();

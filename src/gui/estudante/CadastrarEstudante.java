@@ -11,6 +11,7 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.time.LocalTime;
 import java.time.MonthDay;
 import java.time.Year;
 import java.util.Random;
@@ -42,6 +43,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	JTextField[] text_fields;
 	JComboBox<String> year_jcomboBox, month_jcomboBox, day_jcomboBox;
 	JComboBox<String> nivel_combo;
+	JComboBox<LocalTime> horario_combo;
 
 	String[] year, month, day;
 	
@@ -52,6 +54,8 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento (DD/MM/AAAA)", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nível "};
 	String[] radio_text = new String[] {"M", "F"};
 	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicíclio", "Aulas online"};
+	LocalTime[] horario = new LocalTime[this.get_time().length];
+	Double[] price = new Double[nivel_text.length];
 	
 	//Radio button
 	JRadioButton[] radio_button;
@@ -66,7 +70,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	JLabel empty_label = new JLabel("");
 	
 	public CadastrarEstudante() {
-		this.start();
+		//this.start();
 	}
 	
 	public void start(){
@@ -168,7 +172,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 			if(i == 10) {
 				//System.out.println(i);
 				nivel_combo = new JComboBox<>(nivel_text);
-				nivel_combo.setPreferredSize(new Dimension(150, 30));
+				nivel_combo.setPreferredSize(new Dimension(200, 30));
 
 				nivel_combo.setBackground(Style.tf_bg);
 				nivel_combo.setFont(Style.tf_font);
@@ -201,6 +205,19 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 				// 	nivel_g.add(nivel_radio[l]);
 				// 	panel[i].add(nivel_radio[l]);
 				// }
+				
+				for(int v = 0; v < this.horario.length; v++){
+					this.horario[v] = get_time()[v];
+					System.out.println(get_time()[v]);
+				}
+
+				horario_combo = new JComboBox<>(this.horario);
+				horario_combo.setPreferredSize(new Dimension(200, 30));
+
+				horario_combo.setBackground(Style.tf_bg);
+				horario_combo.setFont(Style.tf_font);
+				horario_combo.addMouseListener(this);
+				panel[i].add(horario_combo);
 			}
 
 			Dimension jcombo_dimension = new Dimension(70, 30);
@@ -301,8 +318,52 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 		return string;
 	}
 	
+	public static LocalTime[] get_time(){
+		LocalTime time = LocalTime.of(04, 30, 00);
+		//LocalTime t_end = time.plusMinutes(90);
+
+		LocalTime[] time_r = new LocalTime[9];
+
+		for(int i = 0; i < 9; i++){
+			if(time.toString().equals("10:30")){
+				time = time.plusHours(2);
+				time = time.plusMinutes(30);
+				time_r[i] = time;
+
+			}
+			else{
+				//time_r[i] = time;
+				time = time.plusHours(1);
+				time = time.plusMinutes(30);
+				time_r[i] = time;
+			}	
+		}
+
+		return time_r;
+	}
+
+	private Double get_price(){
+		Double price = 0.0;
+
+		this.price[0] = 1000.0;
+		this.price[1] = 1025.0;
+		this.price[2] = 1225.0;
+		this.price[3] = 1425.0;
+		this.price[4] = 3489.0;
+		this.price[5] = 4499.0;
+		this.price[6] = 5419.0;
+		this.price[7] = 1409.0;
+
+		for(int k = 0; k < nivel_combo.getItemCount(); k++){
+			if(nivel_combo.getSelectedItem().toString().equals(nivel_combo.getItemAt(k).toString())){
+				price = this.price[k];
+			}
+		}
+
+		return price;
+	}
+
 	int status_nivel = 0;
-	Double preco = 0.0;
 
 	public void actionPerformed(ActionEvent e){
 		if(e.getSource().equals(submit)){
@@ -325,28 +386,32 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 			String contacto_emergencia = text_fields[7].getText();
 			String nome_emergencia = text_fields[8].getText();
 			String nr_celular_emergencia = text_fields[9].getText();
-			String nivel = "";
+			String nivel = nivel_combo.getSelectedItem().toString();
+			String __nivel_avaiacao = "";
 
-			for(int i = 0; i< nivel_text.length; i++){
-				if(nivel_radio[i].isSelected()){
-					nivel = nivel_radio[i].getText();
+			// for(int i = 0; i< nivel_text.length; i++){
+				// String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicíclio", "Aulas online"};
+				
+				
+				// if(nivel_radio[i].isSelected()){
+				// 	nivel = nivel_radio[i].getText();
 
-					if(i == 0){
-						preco = 625.00;
-					}
-					else if(i == 1){
-						preco = 725.00;
-					}
-					else if(i == 2){
-						preco = 925.00;
-					}
-					else if(i == 3){
-						preco = 1025.00;
-					}
-				}
-			}
+				// 	if(i == 0){
+				// 		preco = 625.00;
+				// 	}
+				// 	else if(i == 1){
+				// 		preco = 725.00;
+				// 	}
+				// 	else if(i == 2){
+				// 		preco = 925.00;
+				// 	}
+				// 	else if(i == 3){
+				// 		preco = 1025.00;
+				// 	}
+				// }
+			// }
 
-			Time horario = new Time(120000);
+			Time horario = Time.valueOf((LocalTime)horario_combo.getSelectedItem());
 
 			java.util.Date date = new java.util.Date();
 			java.sql.Date data_matricula = new java.sql.Date(date.getTime());
@@ -362,7 +427,9 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 
 			String emergencia_query = "INSERT INTO emergencia (id_estudante, contacto_emergencia, nome_completo, numero_celular) VALUES (?, ?, ?, ?)";
 
-			String mensalidade_query = "INSERt INTO mensalidade (id_estudante, mes, status, divida) VALUES (?, MONTH(NOW()), ?, ?)";
+			String mensalidade_query = "INSERT INTO mensalidade (id_estudante, mes, status, divida) VALUES (?, MONTH(NOW()), ?, ?)";
+
+			String avaliacao_query = "INSERT INTO " + __nivel_avaiacao + "(id_estudante) VALUES (?)";
 
 			PreparedStatement ps = null;
 			PreparedStatement ps_em = null;
@@ -395,7 +462,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 				ps_mens = Conexao.getConexao_ees().prepareStatement(mensalidade_query);
 				ps_mens.setString(1, id);
 				ps_mens.setString(2, "nao pago");
-				ps_mens.setDouble(3, preco);
+				ps_mens.setDouble(3, this.get_price());
 
 				try {
 					if(ps.executeUpdate() == 1 && ps_em.executeUpdate() == 1 && ps_mens.executeUpdate() == 1){
@@ -403,7 +470,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 					}
 
 				} catch (com.mysql.cj.jdbc.exceptions.MysqlDataTruncation ex){
-					JOptionPane.showMessageDialog(null, "Por favor verifique a data de nascimento", "Erro", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Por favor verifique a data de nascimento ou o numero de digitos do seu numero de telefone", "Erro", JOptionPane.INFORMATION_MESSAGE);
 
 				} catch (Exception ex) {
 					JOptionPane.showMessageDialog(null, ex, "Erro", JOptionPane.INFORMATION_MESSAGE);

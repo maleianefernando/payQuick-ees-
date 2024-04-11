@@ -73,7 +73,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		
 		title = new JLabel();
 		title.setFont(new Font("Consolas", Font.BOLD, 30));
-		title.setText("TURMA DOS REVOLTADOS");
+		title.setText("EMMANUEL ENGLISH SCHOOL");
 		title.setForeground(fg);
 		//title.setIcon(icon);
 		title.setHorizontalTextPosition(JLabel.CENTER);
@@ -207,43 +207,19 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 			if(resultSet.next()){
 				System.out.println("-----3");
 				i = 2;
-				this.dispose();
-				janela = new Janela();
-				janela.start(resultSet.getString("funcao"));
+				if ((resultSet.getString("id_utilizador").equals(nome) || resultSet.getString("nome").equals(nome)) && resultSet.getString("senha").equals(senha)) {
+					this.dispose();
+					janela = new Janela();
+					janela.start(resultSet.getString("funcao"));	
+				}else{
+					i = -1;
+				}
 			}
 			else {
 				System.out.println("-----4");
 				i = -1;
 			}
-			/*
-			while (resultSet.next()) {
-				id_db = resultSet.getString("id");
-				nome_db = resultSet.getString("nome");
-				senha_db = resultSet.getString("senha");
-				funcao_db = resultSet.getString("funcao");
 
-				if(((nome.equals(nome_db) || nome.equals(id_db)) && senha.equals(senha_db))){
-					
-					i = 2;
-					this.dispose();
-					janela = new Janela();
-					janela.start(funcao_db);
-					if(funcao_db.equals("Administrador")){	
-						// janela = new Janela();
-					}
-					else if(funcao_db.equals("Professor")){
-						// janela = new Janela();
-					}
-					
-				}
-				else {
-					if(i == 2){
-						break;
-					}
-
-					i = -1;
-				}
-			}*/
 
 			if(i == -1){
 				// System.out.println("not found");

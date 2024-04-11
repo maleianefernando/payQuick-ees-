@@ -5,22 +5,33 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Time;
+import java.time.LocalTime;
 
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import gui.estudante.CadastrarEstudante;
 import gui.estudante.ListaNominalEstudante;
 import gui.estudante.Mensalidades;
+import gui.estudante.Pauta;
 import gui.funcionario.CadastrarFuncionario;
 import gui.funcionario.ListaNominalFuncionario;
 import gui.util.Style;
@@ -28,6 +39,17 @@ import xutil.Utilitario;
 
 public class Menu extends JPanel implements ActionListener, MouseListener, Utilitario{
 	public JPanel panel_menu = new JPanel();
+
+	Icon pesq_icon = new ImageIcon("./img/pesquisa.png");
+	Icon pesq_icon2 = new ImageIcon("./img/motor-de-pesquisa.png");
+
+	JTextField pesq_estudante;
+	JComboBox<String> pesq_nivel;
+	JComboBox<LocalTime> pesq_turma;
+
+	JButton pesquisar;
+
+	String[] nivel_text = new String[] {"", "Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Inglês intensivo", "Inglês para negócios", "Aulas Domiciliares", "Aulas OnLine"};
 
 	//side bar JMenuIems titles
 	private String[] side_bar_items = new String[] {"Menu"};	//
@@ -58,32 +80,126 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		jmenu_bar.add(Box.createHorizontalGlue());
 		jmenu_bar.setBackground(Style.jmenu_bar_bg);
 
-		botoes(estudante_cadastrado, "Estudante Cadastrado", Style.blue, Color.white, Style.ft);
-		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft);
-		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft);
-		botoes(turmas, "Turmas", Style.blue, Color.white, Style.ft);
+		botoes(estudante_cadastrado, "Estudante Cadastrado", Style.blue, Color.white, Style.ft, this);
+		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft, this);
+		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft, this);
+		botoes(turmas, "Turmas", Style.blue, Color.white, Style.ft, this);
 		
 		this.revalidate();
 		this.repaint();
 	}
+
+	String __nivel_avaliacao = "";
+	String __turma = "";
+	public JPanel SideMenu(Color bg, Color fg){
+
+		JLabel pesq_estudante_label;
+		JLabel nivel_est_label;
+		JLabel turma_est_label;
+
+		GridLayout __grid = new GridLayout(12, 1, 15, 5);
+		JPanel side_menu = new JPanel(__grid);
+
+		JPanel id_est_panel = new JPanel(Style.flow_center);
+		JPanel nivel_panel = new JPanel(Style.flow_center);
+		JPanel turma_panel = new JPanel(Style.flow_center);
+		JPanel pesquisar_panel = new JPanel(Style.flow_center);
+
+		// side_menu.setLayout(new GridLayout(16, 2));
+		side_menu.setBackground(bg);
+		side_menu.setPreferredSize(new Dimension(350, 0));
+
+		side_menu.setVisible(true);
+
+		//id estudante label
+		pesq_estudante_label = new JLabel("ID do estudante");
+		pesq_estudante_label.setForeground(fg);
+		pesq_estudante_label.setFont(Style.tf_font);
+
+		//id text field
+		pesq_estudante = new JTextField(13);
+		pesq_estudante.setPreferredSize(new Dimension(15, 30));
+		pesq_estudante.setFont(Style.tf_font);
+
+		//id estudante panel
+		id_est_panel.setBackground(bg);
+		id_est_panel.add(pesq_estudante_label);
+		id_est_panel.add(pesq_estudante);
+
+		//nivel combo box
+		pesq_nivel = new JComboBox<>(nivel_text);
+		pesq_nivel.setSelectedIndex(0);
+		pesq_nivel.addActionListener(this);
+
+		pesq_turma = new JComboBox<>();
+		pesq_turma.setPreferredSize(pesq_nivel.getPreferredSize());
+		pesq_turma.addActionListener(this);
+
+		for(int i = 0; i < 9; i++){
+			pesq_turma.addItem(CadastrarEstudante.get_time()[i]);
+		}
+		pesq_turma.addItem(LocalTime.of(00, 00));
+		pesq_turma.setSelectedIndex(9);
+
+		//turma label
+		turma_est_label = new JLabel("Selecione a turma");
+		turma_est_label.setFont(Style.tf_font);
+		turma_est_label.setForeground(fg);
+
+		//turma panel
+		turma_panel.setBackground(bg);
+		turma_panel.add(turma_est_label);
+		turma_panel.add(pesq_turma);
+
+		//nivel label
+		nivel_est_label = new JLabel("Selecione o nivel");
+		nivel_est_label.setForeground(fg);
+		nivel_est_label.setFont(Style.tf_font);
+
+		//nivel panel
+		nivel_panel.setBackground(bg);
+		nivel_panel.add(nivel_est_label);
+		nivel_panel.add(pesq_nivel);
+		
+		side_menu.add(new JLabel(""));
+		// side_menu.add(new JLabel(""));
+		
+		//pesquisar button
+		pesquisar = new JButton("Pesquisar");
+		pesquisar.setPreferredSize(new Dimension(side_menu.getWidth(), 70));
+		pesquisar.setBackground(Style.bg);
+		pesquisar.setFocusable(false);
+		pesquisar.setIcon(pesq_icon);
+		pesquisar.addActionListener(this);
+		pesquisar.addMouseListener(this);
+		pesquisar.setBackground(Style.table_bg);
+
+		// pesquisar_panel.setBackground(Color.red);
+		// pesquisar_panel.setPreferredSize(new Dimension(side_menu.getX(), 60));
+		// pesquisar_panel.add(pesquisar);
+		
+		//adding panels
+		side_menu.add(id_est_panel);
+		side_menu.add(nivel_panel);
+		side_menu.add(turma_panel);
+		side_menu.add(pesquisar);
+
+		return side_menu;
+	}
 	
 	
 	//setting the buttons
-	private void botoes(JButton btn, String btn_txt, Color bg, Color fg, Font ft){
+	private void botoes(JButton btn, String btn_txt, Color bg, Color fg, Font ft, JComponent conteiner){
 		btn = new JButton(btn_txt);
 		btn.setFont(ft);
 		btn.setBackground(bg);	//mid blue = 0x3960a1 | TR orange = 0xf2701a
 		btn.setForeground(fg);
 		btn.setFocusable(false);
 		//btn.setPreferredSize(new Dimension(375, 50));
-		btn.addActionListener(e -> {
-
-			System.out.println("Estudante cadastrado");
-		});
-		btn.addActionListener(this);
+		// btn.addActionListener(this);
 		//System.out.println(btn.getActionListeners() + "\n" + btn);
 
-		this.add(btn);
+		conteiner.add(btn);
 
 	}
 	
@@ -148,22 +264,25 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	
 	Login login;
-
-	ListaNominalEstudante lista_est = new ListaNominalEstudante();
+	CadastrarEstudante reg_est;
+	ListaNominalEstudante lista_est;
 	Mensalidades mensalidade;
+	Pauta pauta;
+	JComponent side = Utilitario.menu_ref;
 
-	CadastrarFuncionario reg_func = new CadastrarFuncionario();
-	ListaNominalFuncionario list_func = new ListaNominalFuncionario();
+	CadastrarFuncionario reg_func;
+	ListaNominalFuncionario list_func;
 
 	@Override
 	public void actionPerformed(ActionEvent e){
 
 		//manange left side menu
 		if(e.getSource().equals(side_JMenuItem[0])){
-			
+			//side = new Menu();
+			// side = Utilitario.menu_ref;
 			
 			if(side_status == -1 || side_status == 0){
-				side_status = Login.janela.addMenuSide(Utilitario.menu_ref, BorderLayout.WEST, "Menu");
+				side_status = Login.janela.addMenuSide(side, BorderLayout.WEST, "Menu");
 				//System.out.println("menu removido,  status: " + side_status);
 				
 			}
@@ -176,72 +295,75 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		
 		//list added students
 		else if(e.getSource().equals(est_JMenuItem[0])){
+			side = Utilitario.menu_ref;
 
-			// System.out.println(e.getSource().equals(estudante_cadastrado));
-			// if(list_status == 0 || list_status == -1){
 				lista_est = new ListaNominalEstudante();
 				list_status = Login.janela.addConteiner(lista_est, BorderLayout.CENTER, "Lista Nominal De Estudantes");
 
 				lista_est.start_list();
 				side_status = -1;
-			// }
-			// else {
-			// 	list_status = Login.janela.removeConteiner(lista_est);
-			// 	lista_est.fill_table_status = -1;
-			// }
 			
 		}
 		
+		//pauta
+		else if(e.getSource().equals(est_JMenuItem[1])){
+			
+			side = this.SideMenu(Style.blue, Style.tf_bg);
+			
+			pauta = new Pauta("SELECT * FROM avaliacao_nivel1", "avaliacao_nivel1");
+				list_status = Login.janela.addConteiner(pauta, BorderLayout.CENTER, "Pauta");
+
+				pauta.start_table();
+				side_status = -1;
+		}
+
 		//monthly
 		else if(e.getSource().equals(est_JMenuItem[2])){
-			// String pesq_nome = JOptionPane.showInputDialog(Login.janela, "Nome do esudante", "Pesquisar Mensalidades", JOptionPane.INFORMATION_MESSAGE);
+			
+			side = Utilitario.menu_ref;
 
-			// if(mens_status == 0 || mens_status == -1){
 				mensalidade = new Mensalidades();
 				Login.janela.addConteiner(mensalidade, BorderLayout.CENTER, "Controlo de mensalidades");
 
 				mensalidade.start_table();
 				
 				side_status = -1;
-			// }
-			// else {
-			// 	mens_status = Login.janela.removeConteiner(mensalidade);
-			// }
-			//Login.janela.getContentPane().removeAll();
+			
 		}
 
 		//add students
 		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
 			
-//			if(add_status == 0 || add_status == -1){
-				add_status = Login.janela.addConteiner(Utilitario.cadastrar_estudante_ref, BorderLayout.CENTER, "Cadastrar Estudantes");
+			side = Utilitario.menu_ref;
+
+				reg_est = new CadastrarEstudante();
+				add_status = Login.janela.addConteiner(reg_est.scroll, BorderLayout.CENTER, "Cadastrar Estudantes");
+				reg_est.start();
 
 				side_status = -1;
-			// }
-			// else {
-			// 	add_status = Login.janela.removeConteiner(Utilitario.cadastrar_estudante_ref);
-			// }
+			
 		}
 		else if(e.getSource().equals(func_JMenuItem[0])){	//List registered officers
-//			if(list_func_status == 0 || list_func_status == -1){
+
+			side = Utilitario.menu_ref;
+
+				list_func = new ListaNominalFuncionario();
 				list_func_status = Login.janela.addConteiner(list_func, BorderLayout.CENTER, "Listar funcionarios");
 
 				list_func.start_list();
 
 				side_status = -1;
-			// }else{
-			// 	list_func_status = Login.janela.removeConteiner(list_func);
-			// }
+
 		}
 		else if(e.getSource().equals(func_JMenuItem[3])){	//register a offical
-			// if(reg_func_status == 0 || reg_func_status == -1){
+
+			side = Utilitario.menu_ref;
+
+				reg_func = new CadastrarFuncionario();
 				reg_func_status = Login.janela.addConteiner(reg_func, BorderLayout.CENTER, "Registar funcionarios");
 
 				side_status = -1;
-			// }
-			// else {
-			// 	reg_func_status = Login.janela.removeConteiner(reg_func);
-			// }
+
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[0])){
@@ -253,7 +375,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
-			//Utilitario.login_ref.janela.dispose();
+
 			Login.janela.dispose();
 			login = new Login();
 			login.start();
@@ -266,6 +388,87 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				System.exit(0);
 			}
 		}
+		
+
+
+		////////
+		else if(e.getSource().equals(pesquisar)){
+			String id_estudante = pesq_estudante.getText();
+			String nivel = pesq_nivel.getSelectedItem().toString();
+			Time turma = Time.valueOf((LocalTime)pesq_turma.getSelectedItem());
+
+			String query = "SELECT * FROM avaliacao_nivel1";
+			String tabela = __nivel_avaliacao;
+
+			Boolean hasId = false;
+
+			if(!(id_estudante.trim().equals("")) && !(nivel.equals("")) && !(turma.equals(Time.valueOf(LocalTime.of(0,0,0))))){
+				query = "SELECT * FROM "+ __nivel_avaliacao + " WHERE id_estudante = ?";
+				System.out.println(1);
+
+				// pauta = new Pauta(query, tabela, id_estudante);
+				hasId = true;
+			}
+
+			else if(!(id_estudante.trim().equals("")) && !(nivel.equals(""))){
+				query = "SELECT * FROM " + __nivel_avaliacao + " WHERE id_estudante = ?";
+				System.out.println(2);
+				System.out.println(query);
+
+				// pauta = new Pauta(query, __nivel_avaliacao, id_estudante);
+				hasId = true;
+			}
+
+			else if(id_estudante.trim().equals("") && !(nivel.equals(""))){
+				query = "SELECT * FROM " + __nivel_avaliacao;
+				System.out.println(3);
+
+				// pauta = new Pauta(query, tabela);
+				hasId = false;
+			}
+
+			else if(!(id_estudante.trim().equals("")) && nivel.equals("")){
+				query = "SELECT * FROM " + __nivel_avaliacao + "id_estudante = ?";
+				System.out.println(4);
+
+				// pauta = new Pauta(query, tabela);
+				hasId = false;
+			}
+
+			Login.janela.getContentPane().remove(pauta);
+			
+			if(hasId){
+				pauta = new Pauta(query, tabela, id_estudante);
+			}
+			else {
+				pauta = new Pauta(query, tabela);
+			}
+
+			pauta.start_table();
+			Login.janela.getContentPane().add(pauta, BorderLayout.CENTER);
+			Login.janela.getContentPane().revalidate();
+			Login.janela.getContentPane().repaint();
+		}
+		else if(e.getSource().equals(pesq_nivel)){
+
+			if(pesq_nivel.getSelectedItem().toString().equals("Nivel 1")){
+				__nivel_avaliacao = "avaliacao_nivel1";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 2")){
+				__nivel_avaliacao = "avaliacao_nivel2";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 3")){
+				__nivel_avaliacao = "avaliacao_nivel3";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 4")){
+				__nivel_avaliacao = "avaliacao_nivel4";
+			}
+
+			System.out.println(__nivel_avaliacao);
+		}
 	}
 
 
@@ -277,13 +480,17 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-
+		if(e.getSource().equals(pesquisar)){
+			pesquisar.setIcon(pesq_icon2);
+		}
 	}
 
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		
+	public void mouseExited(MouseEvent e) {
+		if(e.getSource().equals(pesquisar)){
+			pesquisar.setIcon(pesq_icon);
+		}
 	}
 
 
