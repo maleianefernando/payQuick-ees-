@@ -1,7 +1,10 @@
 package gui.funcionario;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
 //import java.awt.GridLayout;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +28,9 @@ public class ListaNominalFuncionario extends JPanel{
 	private JTable table;
 	private JScrollPane table_scroll;
 	private JTableHeader table_header;
+
+	private JPanel header, title_panel;
+	private JLabel title;
 	
 	String[] table_columns = new String[] {"ID Funcionario", "ID Utilizador", "Nome", "Funcao", "Obs"};
 
@@ -41,15 +47,48 @@ public class ListaNominalFuncionario extends JPanel{
 		this.setVisible(true);
 		this.setLayout(new BorderLayout());
 		this.setBackground(Style.bg);
-
-		this.select_from_database();
 		
+		this.setHeader();
+		
+		this.select_from_database();
 		this.create_table();
-		this.add(new JLabel("            "), BorderLayout.NORTH);
+		// this.add(new JLabel("            "), BorderLayout.NORTH);
 		this.add(new JLabel("            "), BorderLayout.EAST);
 		this.add(table_scroll, BorderLayout.CENTER);
 		this.add(new JLabel("            "), BorderLayout.WEST);
 	}
+
+
+	private void setHeader(){
+        header = new JPanel(new GridLayout(3, 3));
+        header.setBackground(Style.bg);
+
+        title = new JLabel("Lista Nominal De Funcionarios".toUpperCase());
+        title.setFont(new Font("Consolas", Font.BOLD, 30));
+        title.setForeground(new Color(0x039e18));
+
+        title_panel = new JPanel(Style.flow_center);
+        title_panel.setBackground(Style.bg);
+        title_panel.add(title);
+
+        header.add(new JLabel("")); //1x1
+        header.add(new JLabel("")); //1x2
+        header.add(new JLabel("")); //1x3
+        header.add(new JLabel("")); //2x1
+        header.add(title_panel); //2x2
+        header.add(new JLabel("")); //2x3
+        header.add(new JLabel("")); //3x1
+        header.add(new JLabel("")); //3x2
+        header.add(new JLabel("")); //3x3
+
+        // this.add(new JLabel("            "), BorderLayout.WEST);
+		// this.add(new JLabel("            "), BorderLayout.EAST);
+
+        this.add(header, BorderLayout.NORTH);
+		this.revalidate();
+		this.repaint();
+    }
+
 
 	public void create_table(){
 		//table model

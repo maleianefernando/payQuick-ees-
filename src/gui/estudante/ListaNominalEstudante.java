@@ -248,23 +248,37 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
                     }
                 }
                 
+				JOptionPane.showMessageDialog(Login.janela, "Lista de estudantes actualizada com sucesso", "SUCESSO!!!", JOptionPane.INFORMATION_MESSAGE);
             }catch(com.mysql.cj.jdbc.exceptions.MysqlDataTruncation e2){
 				String err_str = e2.toString();
-				String err = err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1);
+				System.out.println(err_str);
+				String err = "";
 				
-				System.out.println(err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1));	//115, 67
+				try{
+					err = err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1);
+					
+					System.out.println(err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1));	//115, 67
+
+				}catch(Exception e3){
+					// System.out.println(e3);
+					err = err_str;
+				}
 
 				if(err.equals("`emmanuel_english_school`.`estudante`.`data_nascimento`")){
 					JOptionPane.showMessageDialog(Login.janela, "Verifique a data de nascimento no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
 				}
 
-				else if(err.equals("`emmanuel_english_school`.`estudante`.`sexo`")){
+				else if(err.equals("com.mysql.cj.jdbc.exceptions.MysqlDataTruncation: Data truncation: Data too long for column 'sexo' at row 1")){
 					JOptionPane.showMessageDialog(Login.janela, "Verifique o sexo no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
 				}
 
 				else if(err.equals("`emmanuel_english_school`.`estudante`.`horario`")){
 					JOptionPane.showMessageDialog(Login.janela, "Certifique-se de colocar o formato certo do horário no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
 				}
+
+			}catch(java.time.format.DateTimeParseException e2){
+
+				JOptionPane.showMessageDialog(Login.janela, "Certifique-se de colocar o formato certo do horário no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
 
 			}catch(Exception e2){
                 JOptionPane.showMessageDialog(Login.janela, e2, "ERRO!", JOptionPane.OK_OPTION);

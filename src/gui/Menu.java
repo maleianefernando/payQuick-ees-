@@ -46,6 +46,8 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	JTextField pesq_estudante;
 	JComboBox<String> pesq_nivel;
 	JComboBox<LocalTime> pesq_turma;
+	JComboBox<String> nivel_combo;
+	JComboBox<String> ano_combo;
 
 	JButton pesquisar;
 
@@ -103,7 +105,6 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		JPanel id_est_panel = new JPanel(Style.flow_center);
 		JPanel nivel_panel = new JPanel(Style.flow_center);
 		JPanel turma_panel = new JPanel(Style.flow_center);
-		JPanel pesquisar_panel = new JPanel(Style.flow_center);
 
 		// side_menu.setLayout(new GridLayout(16, 2));
 		side_menu.setBackground(bg);
@@ -189,6 +190,77 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	}
 	
 	
+	public JPanel SideMenu_studantes(Color bg, Color fg){
+
+		JLabel ano_label;
+		JLabel nivel_label;
+
+		GridLayout __grid = new GridLayout(12, 1, 15, 5);
+		JPanel side_menu = new JPanel(__grid);
+
+		JPanel ano_panel = new JPanel(Style.flow_center);
+		JPanel nivel_panel = new JPanel(Style.flow_center);
+
+		// side_menu.setLayout(new GridLayout(16, 2));
+		side_menu.setBackground(bg);
+		side_menu.setPreferredSize(new Dimension(350, 0));
+
+		side_menu.setVisible(true);
+
+		//combo estudante label
+		ano_label = new JLabel("Filtrar por ano");
+		ano_label.setForeground(fg);
+		ano_label.setFont(Style.tf_font);
+
+		//year combo box
+		String[] __ano__ = new String[] {"", "2024"};
+		ano_combo = new JComboBox<>(__ano__);
+		ano_combo.setSelectedIndex(0);
+		ano_combo.addActionListener(this);
+		ano_combo.setPreferredSize(new Dimension(150, 25));
+
+		//year estudante panel
+		ano_panel.setBackground(bg);
+		ano_panel.add(ano_label);
+		ano_panel.add(ano_combo);
+
+		//nivel label
+		nivel_label = new JLabel("Filtrar pelo nivel");
+		nivel_label.setFont(Style.tf_font);
+		nivel_label.setForeground(fg);
+
+		//nivel combo
+		nivel_combo = new JComboBox<>(nivel_text);
+		nivel_combo.setSelectedIndex(0);
+		nivel_combo.addActionListener(this);
+
+		//nivel panel
+		nivel_panel.setBackground(bg);
+		nivel_panel.add(nivel_label);
+		nivel_panel.add(nivel_combo);
+
+		side_menu.add(new JLabel(""));
+		
+		//pesquisar button
+		pesquisar = new JButton("Pesquisar");
+		pesquisar.setPreferredSize(new Dimension(side_menu.getWidth(), 70));
+		pesquisar.setBackground(Style.bg);
+		pesquisar.setFocusable(false);
+		pesquisar.setIcon(pesq_icon);
+		//pesquisar.addActionListener(this);
+		pesquisar.addMouseListener(this);
+		pesquisar.setBackground(Style.table_bg);
+		pesquisar.setMnemonic('P');
+		
+		//adding panels
+		side_menu.add(ano_panel);
+		side_menu.add(nivel_panel);
+		side_menu.add(pesquisar);
+
+		return side_menu;
+	}
+
+
 	//setting the buttons
 	private void botoes(JButton btn, String btn_txt, Color bg, Color fg, Font ft, JComponent conteiner){
 		btn = new JButton(btn_txt);
@@ -310,7 +382,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		
 		//list added students
 		else if(e.getSource().equals(est_JMenuItem[0])){
-			side = Utilitario.menu_ref;
+			side = SideMenu_studantes(Style.blue, Style.tf_bg);
 
 				lista_est = new ListaNominalEstudante();
 				list_status = Login.janela.addConteiner(lista_est, BorderLayout.CENTER, "Lista Nominal De Estudantes");
