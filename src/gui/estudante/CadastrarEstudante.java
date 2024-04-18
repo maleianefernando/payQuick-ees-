@@ -53,7 +53,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	//Items to the forms JLabel
 	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento (DD/MM/AAAA)", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nível "};
 	String[] radio_text = new String[] {"M", "F"};
-	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicíclio", "Aulas online"};
+	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicílio", "Aulas online"};
 	LocalTime[] horario = new LocalTime[this.get_time().length];
 	Double[] price = new Double[nivel_text.length];
 	
@@ -74,6 +74,8 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	}
 	
 	public void start(){
+		scroll.getVerticalScrollBar().setUnitIncrement(10);
+
 		panels = new JPanel[15];	//form_text.length+2
 		labels = new JLabel[form_text.length];
 		text_fields = new JTextField[form_text.length];
@@ -387,7 +389,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 			String nome_emergencia = text_fields[8].getText();
 			String nr_celular_emergencia = text_fields[9].getText();
 			String nivel = nivel_combo.getSelectedItem().toString();
-			String __nivel_avaiacao = "";
+			String __nivel_avaliacao = "";
 
 			// for(int i = 0; i< nivel_text.length; i++){
 				// String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicíclio", "Aulas online"};
@@ -429,11 +431,12 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 
 			String mensalidade_query = "INSERT INTO mensalidade (id_estudante, mes, status, divida) VALUES (?, MONTH(NOW()), ?, ?)";
 
-			String avaliacao_query = "INSERT INTO " + __nivel_avaiacao + "(id_estudante) VALUES (?)";
+			String avaliacao_query = "";
 
 			PreparedStatement ps = null;
 			PreparedStatement ps_em = null;
 			PreparedStatement ps_mens = null;
+			PreparedStatement ps_nivel = null;
 
 			try{
 				ps = Conexao.getConexao_ees().prepareStatement(query);
@@ -464,8 +467,38 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 				ps_mens.setString(2, "nao pago");
 				ps_mens.setDouble(3, this.get_price());
 
+
+
+				if(nivel.equals(nivel_text[0])){
+					avaliacao_query = "INSERT INTO avaliacao_nivel1 (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[1])){
+					avaliacao_query = "INSERT INTO avaliacao_nivel2 (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[2])){
+					avaliacao_query = "INSERT INTO avaliacao_nivel3 (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[3])){
+					avaliacao_query = "INSERT INTO avaliacao_nivel4 (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[4])){
+					avaliacao_query = "INSERT INTO avaliacao_ingles_intensivo (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[5])){
+					avaliacao_query = "INSERT INTO avaliacao_ingles_negocios (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[6])){
+					avaliacao_query = "INSERT INTO avaliacao_ingles_domiciliar (id_estudante) VALUE (?)";
+				}
+				else if(nivel.equals(nivel_text[7])){
+					avaliacao_query = "INSERT INTO avaliacao_ingles_online (id_estudante) VALUE (?)";
+				}
+
+				ps_nivel = Conexao.getConexao_ees().prepareStatement(avaliacao_query);
+				ps_nivel.setString(1, id);
+
 				try {
-					if(ps.executeUpdate() == 1 && ps_em.executeUpdate() == 1 && ps_mens.executeUpdate() == 1){
+					if(ps.executeUpdate() == 1 && ps_em.executeUpdate() == 1 && ps_mens.executeUpdate() == 1 && ps_nivel.executeUpdate() == 1){
 						JOptionPane.showMessageDialog(Login.janela, "Estudante " + nome + " cadastrado!", "Sucesso!!!", JOptionPane.INFORMATION_MESSAGE);
 					}
 

@@ -129,10 +129,11 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
         Integer add_user_status = 0;
         Integer add_func_stataus = 0;
         Random r = new Random();
-        Connection conn = Conexao.getConexao();
+        Connection conn = Conexao.getConexao_ees();
         PreparedStatement ps_user = null;
         PreparedStatement ps = null;
         String query = "";
+        String user_id = "";
 
         //generate the func id
         for(int i = 0; i < 8; i ++){
@@ -144,7 +145,7 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
         }
 
         if(is_user.isSelected()){
-            String user_id = "@";
+            user_id = "@";
             String password = "senha";
 
             //generating the user and password id
@@ -173,20 +174,35 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+
+            query = "INSERT INTO funcionarios (id_funcionarios, nome, idade, identificacao, habilidades, experiencia_profissional, funcao, id_utilizador) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        }
+        else{
+            query = "INSERT INTO funcionarios (id_funcionarios, nome, idade, identificacao, habilidades, experiencia_profissional, funcao) VALUES (?, ?, ?, ?, ?, ?, ?)";
         }
 
-        query = "INSERT INTO funcionarios (id_funcionarios, nome, idade, identificacao, habilidades, experiencia_profissional, funcao) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        
         try {
             ps = conn.prepareStatement(query);
 
-            ps.setString(1, id);
-            ps.setString(2, name);
-            ps.setInt(3, age);
-            ps.setString(4, id_nr);
-            ps.setString(5, skills);
-            ps.setString(6, experience);
-            ps.setString(7, position);
+            if(is_user.isSelected()){
+                ps.setString(1, id);
+                ps.setString(2, name);
+                ps.setInt(3, age);
+                ps.setString(4, id_nr);
+                ps.setString(5, skills);
+                ps.setString(6, experience);
+                ps.setString(7, position);
+                ps.setString(8, user_id);
+            }
+            else{
+                ps.setString(1, id);
+                ps.setString(2, name);
+                ps.setInt(3, age);
+                ps.setString(4, id_nr);
+                ps.setString(5, skills);
+                ps.setString(6, experience);
+                ps.setString(7, position);
+            }
 
             add_func_stataus = ps.executeUpdate();
             ps.close();
@@ -218,6 +234,7 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
             
         } catch (Exception e) {
             System.out.println("Insert failed!!");
+            e.printStackTrace();
         }
 
     }

@@ -18,8 +18,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 import connection.Conexao;
+import gui.Login;
 import gui.util.Style;
 
 public class Pauta  extends JPanel implements ActionListener{
@@ -33,11 +36,12 @@ public class Pauta  extends JPanel implements ActionListener{
 
     JLabel title;
 
-    JButton pagar = new JButton("Salvar Alterações");
+    JButton save = new JButton("Salvar Alterações");
     
     Object[][] table_data;
     JTable table;
     JScrollPane table_scroll;
+    JTableHeader table_header;
 
     public Pauta(String query, String tabela){
         this.__query = query;
@@ -62,16 +66,16 @@ public class Pauta  extends JPanel implements ActionListener{
     }
 
     private void setFooter(){
-        pagar.setBackground(Style.btn_bg);
-        pagar.setFont(Style.btn_font);
-        pagar.setForeground(Style.tf_bg);
-        pagar.setPreferredSize(new Dimension(300, 50));
-        pagar.setFocusable(false);
-        pagar.addActionListener(this);
+        save.setBackground(Style.btn_bg);
+        save.setFont(Style.btn_font);
+        save.setForeground(Style.tf_bg);
+        save.setPreferredSize(new Dimension(300, 50));
+        save.setFocusable(false);
+        save.addActionListener(this);
 
         footerPanel.setPreferredSize(new Dimension(0, 100));
         footerPanel.setBackground(Style.bg);
-        footerPanel.add(pagar);
+        footerPanel.add(save);
         this.add(footerPanel, BorderLayout.SOUTH);
     }
 
@@ -123,6 +127,15 @@ public class Pauta  extends JPanel implements ActionListener{
 
         table = new JTable(model);
         table.setBackground(Style.table_bg);
+		table.setFont(Style.table_font);
+		table.setRowHeight(Style.table_row_height);
+		table.setIntercellSpacing(Style.cell_spacing);
+		table.setBorder(Style.table_border);
+
+        table_header = table.getTableHeader();
+		table_header.setFont(Style.table_head_font);
+        table_header.setBackground(Style.table_head_bg);
+
 
         //update
         model.fireTableDataChanged();
@@ -196,6 +209,83 @@ public class Pauta  extends JPanel implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(save)){
+            TableModel model = table.getModel();
+            String query = "";
+            // String __nivel_avaliacao = "";
+            PreparedStatement ps = null;
+            
+            Double media = 0.0;
+            // String id_estudante = "";
 
+            query = "UPDATE " + __tabela + " SET teste_escrito1 = ?, teste_escrito2 = ?, teste_escrito3 = ?, teste_oral1 = ?, teste_oral2 = ?, teste_oral3 = ?, teste_oral4 = ?, teste_oral5 = ?, media = ? WHERE id_estudante = ?";
+
+            // Object nota = new Object();
+
+            try{
+                ps = Conexao.getConexao_ees().prepareStatement(query);
+                System.out.println(model.getColumnCount());
+                for(int i = 0; i < model.getRowCount(); i++){
+
+                    ps.setDouble(1, Double.valueOf(model.getValueAt(i, 1).toString()));
+
+                    ps.setDouble(2, Double.valueOf(model.getValueAt(i, 2).toString()));
+
+                    ps.setDouble(3, Double.valueOf(model.getValueAt(i, 3).toString()));
+
+                    ps.setDouble(4, Double.valueOf(model.getValueAt(i, 4).toString()));
+
+                    ps.setDouble(5, Double.valueOf(model.getValueAt(i, 5).toString()));
+
+                    ps.setDouble(6, Double.valueOf(model.getValueAt(i, 6).toString()));
+
+                    ps.setDouble(7, Double.valueOf(model.getValueAt(i, 7).toString()));
+
+                    ps.setDouble(8, Double.valueOf(model.getValueAt(i, 8).toString()));
+
+                    for(int j = 1; j < 9; j++){
+                        media += Double.valueOf(model.getValueAt(i, j).toString());
+                    }
+
+                    media = media/8;
+                    String media_format = String.format("%.2f", media);
+                    media = Double.valueOf(media_format);
+
+                    ps.setDouble(9, media);
+
+                    ps.setString(10, model.getValueAt(i, 0).toString());
+
+                    if(ps.executeUpdate() == 1){
+                        System.out.println("pauta atualizada");
+                    }
+                    // for(int j = 1; j < model.getColumnCount(); j++){
+                        
+                    //     if(k < 8){
+                    //         nota = model.getValueAt(i, j);
+                    //         System.out.println("Object: "+ nota);
+
+
+                    //         ps.setDouble(k, Double.valueOf(nota.toString()));
+                    //         media += (Double)model.getValueAt(i, j);
+
+                    //     }else if(k == 8){
+                    //         ps.setString(9, (String)model.getValueAt(i, 0));
+                    //         media = media/8;
+                    //         ps.setDouble(k, media);
+                    //     }
+                        
+
+                    //     System.out.println("K: "+k+"- J "+j+ " "+model.getValueAt(i, j));
+
+                    //     k++;
+
+                    // }
+                }
+                
+            }catch(Exception e2){
+                JOptionPane.showMessageDialog(Login.janela, e2, "ERRO!", JOptionPane.OK_OPTION);
+                e2.printStackTrace();
+            }
+        }
     }
 }

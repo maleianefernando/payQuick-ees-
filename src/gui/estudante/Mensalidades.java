@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 import connection.Conexao;
 import gui.Login;
@@ -34,6 +35,7 @@ public class Mensalidades  extends JPanel implements ActionListener{
     Object[][] table_data;
     JTable table;
     JScrollPane table_scroll;
+    JTableHeader table_header;
 
     public Mensalidades(){
 
@@ -106,6 +108,14 @@ public class Mensalidades  extends JPanel implements ActionListener{
 
         table = new JTable(model);
         table.setBackground(Style.table_bg);
+		table.setFont(Style.table_font);
+		table.setRowHeight(Style.table_row_height);
+		table.setIntercellSpacing(Style.cell_spacing);
+		table.setBorder(Style.table_border);
+
+        table_header = table.getTableHeader();
+		table_header.setFont(Style.table_head_font);
+        table_header.setBackground(Style.table_head_bg);
 
         //update
         model.fireTableDataChanged();

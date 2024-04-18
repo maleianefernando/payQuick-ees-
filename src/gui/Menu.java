@@ -49,12 +49,12 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	JButton pesquisar;
 
-	String[] nivel_text = new String[] {"", "Nivel 1", "Nivel 2", "Nivel 3", "Nivel 4", "Inglês intensivo", "Inglês para negócios", "Aulas Domiciliares", "Aulas OnLine"};
+	String[] nivel_text = new String[] {"", "A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)", "D1 (Fluente)", "Inglês intensivo", "Inglês para negócios", "Aulas Domiciliares", "Aulas OnLine"};
 
 	//side bar JMenuIems titles
 	private String[] side_bar_items = new String[] {"Menu"};	//
-	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Mensalidades", "Disciplinas Lecionadas", "Cadastrar"};	//items of the menu 'estudante'
-	private String[] func_items = new String[] {"Lista Nominal", "Salários", "Pendentes", "Cadastrar"};	//items of the menu 'funcionario'
+	private String[] est_items = new String[] {"Lista Nominal", "Desempenho", "Mensalidades", "Cadastrar"};	//items of the menu 'estudante'
+	private String[] func_items = new String[] {"Lista Nominal", "Cadastrar"};	//items of the menu 'funcionario'
 	private String[] conta_items = new String[]{"Minha conta", "Logout", "Sair"};
 	private String[] ajuda_items = new String[] {"Ajuda", "Quem Somos?", "Logout", "Sair"};	//items of the menu ajuda
 	
@@ -173,6 +173,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		pesquisar.addActionListener(this);
 		pesquisar.addMouseListener(this);
 		pesquisar.setBackground(Style.table_bg);
+		pesquisar.setMnemonic('P');
 
 		// pesquisar_panel.setBackground(Color.red);
 		// pesquisar_panel.setPreferredSize(new Dimension(side_menu.getX(), 60));
@@ -254,6 +255,20 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			
 		}
 	}
+
+	private void logout(){
+		Login.janela.dispose();
+		login = new Login();
+		login.start();
+	}
+
+	private void exit(){
+		Integer exit_status = JOptionPane.showConfirmDialog(Login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
+
+		if(exit_status.equals(0)){
+			System.exit(0);
+		}
+	}
 	
 	int side_status = 0;
 	int list_status = 0;
@@ -332,7 +347,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		}
 
 		//add students
-		else if(e.getSource().equals(est_JMenuItem[4])){	//Register student
+		else if(e.getSource().equals(est_JMenuItem[3])){	//Register student
 			
 			side = Utilitario.menu_ref;
 
@@ -355,7 +370,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				side_status = -1;
 
 		}
-		else if(e.getSource().equals(func_JMenuItem[3])){	//register a offical
+		else if(e.getSource().equals(func_JMenuItem[1])){	//register a offical
 
 			side = Utilitario.menu_ref;
 
@@ -365,28 +380,38 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				side_status = -1;
 
 		}
+		//account details
+		else if(e.getSource().equals(conta_JMenuItem[0])){
 
+		}
+
+		//logout
+		else if(e.getSource().equals(conta_JMenuItem[1])){
+			this.logout();
+		}
+
+		//exit
+		else if(e.getSource().equals(conta_JMenuItem[2])){
+			this.exit();
+		}
+
+		//help
 		else if(e.getSource().equals(ajuda_JMenuItem[0])){
 			JOptionPane.showMessageDialog(Login.janela, "Esta funcionalidade ainda está em desenvolvimento", "Ajuda", JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		else if(e.getSource().equals(ajuda_JMenuItem[1])){	//About us
+		//about us
+		else if(e.getSource().equals(ajuda_JMenuItem[1])){	
 			JOptionPane.showMessageDialog(Login.janela, "Somos a Emmanuel English School, uma escola especializada em ensinar a lingua inglesa atravês de métodos funcionais e eficazes", "Quem Somos Nós?", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
 
-			Login.janela.dispose();
-			login = new Login();
-			login.start();
+			this.logout();
 		}
 		
 		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
-			Integer exit_status = JOptionPane.showConfirmDialog(Login.janela, "Sair?", "Confirmar saida", JOptionPane.YES_NO_OPTION);
-
-			if(exit_status.equals(0)){
-				System.exit(0);
-			}
+			this.exit();
 		}
 		
 
@@ -451,20 +476,36 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		}
 		else if(e.getSource().equals(pesq_nivel)){
 
-			if(pesq_nivel.getSelectedItem().toString().equals("Nivel 1")){
+			if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[1])){
 				__nivel_avaliacao = "avaliacao_nivel1";
 			}
 
-			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 2")){
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[2])){
 				__nivel_avaliacao = "avaliacao_nivel2";
 			}
 
-			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 3")){
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[3])){
 				__nivel_avaliacao = "avaliacao_nivel3";
 			}
 
-			else if(pesq_nivel.getSelectedItem().toString().equals("Nivel 4")){
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[4])){
 				__nivel_avaliacao = "avaliacao_nivel4";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[5])){
+				__nivel_avaliacao = "avaliacao_ingles_intensivo";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[6])){
+				__nivel_avaliacao = "avaliacao_ingles_negocios";
+			}
+			
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[7])){
+				__nivel_avaliacao = "avaliacao_ingles_domiciliar";
+			}
+
+			else if(pesq_nivel.getSelectedItem().toString().equals(nivel_text[8])){
+				__nivel_avaliacao = "avaliacao_ingles_online";
 			}
 
 			System.out.println(__nivel_avaliacao);

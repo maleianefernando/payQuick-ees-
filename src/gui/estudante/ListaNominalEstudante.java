@@ -13,24 +13,31 @@ import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalTime;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableModel;
 
 import connection.Conexao;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import gui.Login;
 import gui.util.Style;
 
 public class ListaNominalEstudante extends JPanel  implements ActionListener, MouseListener {
 	//private GridLayout grid21 = new GridLayout(2, 3);
 	private JTable table;
 	private JScrollPane table_scroll;
+    JTableHeader table_header;
+
 	private JButton save;
 	
 	private JPanel header, title_panel;
@@ -65,7 +72,6 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 		save.setForeground(Style.tf_bg);
 		save.setFocusable(false);
 		save.addActionListener(this);
-		save.addMouseListener(this);
 
 		JPanel footer = new JPanel(Style.flow_center);
 		footer.setBackground(Style.bg);
@@ -112,6 +118,14 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 		add_row(model, table_data);
 		table = new JTable(model);
 		table.setBackground(Style.table_bg);
+		table.setFont(Style.table_font);
+		table.setRowHeight(Style.table_row_height);
+		table.setIntercellSpacing(Style.cell_spacing);
+		table.setBorder(Style.table_border);
+
+		table_header = table.getTableHeader();
+		table_header.setFont(Style.table_head_font);
+		table_header.setBackground(Style.table_head_bg);
 		
 		//update table
 		model.fireTableDataChanged();
@@ -196,9 +210,68 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(save)){
-			
-		}
+        if(e.getSource().equals(save)){
+            TableModel model = table.getModel();
+            String query_update = "";
+            PreparedStatement ps_update = null;
+			Integer row = 0;
+
+            query_update = "UPDATE estudante SET nome_completo = ?, bairro = ?, email = ?, data_nascimento = ?, sexo = ?, numero_celular = ?, nivel = ?, horario = ? WHERE id_estudante = ?";
+
+            try{
+                ps_update = Conexao.getConexao_ees().prepareStatement(query_update);
+                System.out.println(model.getRowCount());
+
+                for(int i = 0; i < model.getRowCount(); i++){
+					row = i;
+
+                    ps_update.setString(1, model.getValueAt(i, 1).toString());
+
+                    ps_update.setString(2, model.getValueAt(i, 2).toString());
+
+                    ps_update.setString(3, model.getValueAt(i, 3).toString());
+
+					ps_update.setString(4, model.getValueAt(i, 4).toString());
+
+					ps_update.setString(5, model.getValueAt(i, 5).toString());
+
+					ps_update.setString(6, model.getValueAt(i, 6).toString());
+
+					ps_update.setString(7, model.getValueAt(i, 7).toString());
+
+					ps_update.setTime(8, Time.valueOf(LocalTime.parse(model.getValueAt(i, 8).toString())));
+
+					ps_update.setString(9, model.getValueAt(i, 0).toString());
+
+                    if(ps_update.executeUpdate() == 1){
+                        System.out.println("lista atualizada");
+                    }
+                }
+                
+            }catch(com.mysql.cj.jdbc.exceptions.MysqlDataTruncation e2){
+				String err_str = e2.toString();
+				String err = err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1);
+				
+				System.out.println(err_str.substring(err_str.indexOf('`'), err_str.lastIndexOf('a')-1));	//115, 67
+
+				if(err.equals("`emmanuel_english_school`.`estudante`.`data_nascimento`")){
+					JOptionPane.showMessageDialog(Login.janela, "Verifique a data de nascimento no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
+				}
+
+				else if(err.equals("`emmanuel_english_school`.`estudante`.`sexo`")){
+					JOptionPane.showMessageDialog(Login.janela, "Verifique o sexo no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
+				}
+
+				else if(err.equals("`emmanuel_english_school`.`estudante`.`horario`")){
+					JOptionPane.showMessageDialog(Login.janela, "Certifique-se de colocar o formato certo do horário no estudante " + model.getValueAt(row, 0), "ERRO!", JOptionPane.ERROR_MESSAGE);
+				}
+
+			}catch(Exception e2){
+                JOptionPane.showMessageDialog(Login.janela, e2, "ERRO!", JOptionPane.OK_OPTION);
+                e2.printStackTrace();
+            }
+			System.out.println("fim----------");
+        }
 	}
 
 	@Override

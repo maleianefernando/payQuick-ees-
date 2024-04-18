@@ -2,7 +2,6 @@ package gui;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 import gui.util.Style;
 import xutil.Utilitario;

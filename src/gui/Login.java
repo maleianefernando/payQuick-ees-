@@ -160,7 +160,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		submit_panel.add(login_button);
 		cadastro.add(submit_panel);
 		
-		ImageIcon img = new ImageIcon("./img/__tr.jpg");
+		ImageIcon img = new ImageIcon("./img/ees.jpg");
 		JLabel img_label = new JLabel("Faca Login e torne-se um revoltado");
 		img_label.setBackground(new Color(0x3960a1));
 		img_label.setForeground(new Color(0xf2701a));
@@ -196,7 +196,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		String sql = "SELECT * FROM utilizadores WHERE nome = ? OR id_utilizador = ? AND senha = ?";
 		
 		try {
-			PreparedStatement ps = Conexao.getConexao().prepareStatement(sql);
+			PreparedStatement ps = Conexao.getConexao_ees().prepareStatement(sql);
 			System.out.println("-----1");
 			ps.setString(1, nome);
 			ps.setString(2, nome);
@@ -207,6 +207,11 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 			if(resultSet.next()){
 				System.out.println("-----3");
 				i = 2;
+
+				// System.out.println(resultSet.getString("id_utilizador"));
+				// System.out.println(resultSet.getString("nome"));
+				// System.out.println(resultSet.getString("senha"));
+
 				if ((resultSet.getString("id_utilizador").equals(nome) || resultSet.getString("nome").equals(nome)) && resultSet.getString("senha").equals(senha)) {
 					this.dispose();
 					janela = new Janela();
