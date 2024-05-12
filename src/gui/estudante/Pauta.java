@@ -7,6 +7,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +27,7 @@ import connection.Conexao;
 import gui.Login;
 import gui.util.Style;
 
-public class Pauta  extends JPanel implements ActionListener{
+public class Pauta  extends JPanel implements ActionListener, MouseListener{
     
     String __query = "";
     String __tabela = "";
@@ -72,6 +74,8 @@ public class Pauta  extends JPanel implements ActionListener{
         save.setPreferredSize(new Dimension(300, 50));
         save.setFocusable(false);
         save.addActionListener(this);
+        save.addMouseListener(this);
+        save.setMnemonic('S');
 
         footerPanel.setPreferredSize(new Dimension(0, 100));
         footerPanel.setBackground(Style.bg);
@@ -162,6 +166,7 @@ public class Pauta  extends JPanel implements ActionListener{
 			try{
 				ps = Conexao.getConexao_ees().prepareStatement(query);
 
+                //Setting the id_estudante to look for on the DB
                 if(!this.__id.equals("")){
                     ps.setString(1, __id);
                 }
@@ -181,7 +186,7 @@ public class Pauta  extends JPanel implements ActionListener{
 					table_data = new Object[table_tuples][table_attrs];
 					
 					int i = 0;
-					while(resultSet.next() && i < table_tuples){
+					while(resultSet.next()){    //resultSet.next() && i < table_tuples
 
                         for(int l = 0; l < 10; l++){
                             if(l == 0){
@@ -287,5 +292,30 @@ public class Pauta  extends JPanel implements ActionListener{
                 e2.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent arg0) {
+
     }
 }

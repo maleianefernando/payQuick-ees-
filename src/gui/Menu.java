@@ -38,6 +38,7 @@ import gui.util.Style;
 import xutil.Utilitario;
 
 public class Menu extends JPanel implements ActionListener, MouseListener, Utilitario{
+	String est_query = "SELECT * FROM estudante";
 	public JPanel panel_menu = new JPanel();
 
 	Icon pesq_icon = new ImageIcon("./img/pesquisa.png");
@@ -49,9 +50,9 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	JComboBox<String> nivel_combo;
 	JComboBox<String> ano_combo;
 
-	JButton pesquisar;
+	JButton pesquisar, listar_estudante;
 
-	String[] nivel_text = new String[] {"", "A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)", "D1 (Fluente)", "Inglês intensivo", "Inglês para negócios", "Aulas Domiciliares", "Aulas OnLine"};
+	String[] nivel_text = new String[] {"", "A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)", "D1 (Fluente)", "Inglês intensivo", "Inglês para negócios", "Aulas domiciliares", "Aulas onLine"};
 
 	//side bar JMenuIems titles
 	private String[] side_bar_items = new String[] {"Menu"};	//
@@ -93,7 +94,8 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	String __nivel_avaliacao = "";
 	String __turma = "";
-	public JPanel SideMenu(Color bg, Color fg){
+
+	public JPanel sideMenu(Color bg, Color fg){
 
 		JLabel pesq_estudante_label;
 		JLabel nivel_est_label;
@@ -190,7 +192,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	}
 	
 	
-	public JPanel SideMenu_studantes(Color bg, Color fg){
+	public JPanel sideMenu_studants(Color bg, Color fg){
 
 		JLabel ano_label;
 		JLabel nivel_label;
@@ -217,7 +219,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		ano_combo = new JComboBox<>(__ano__);
 		ano_combo.setSelectedIndex(0);
 		ano_combo.addActionListener(this);
-		ano_combo.setPreferredSize(new Dimension(150, 25));
+		ano_combo.setPreferredSize(new Dimension(170, 25));
 
 		//year estudante panel
 		ano_panel.setBackground(bg);
@@ -242,20 +244,20 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		side_menu.add(new JLabel(""));
 		
 		//pesquisar button
-		pesquisar = new JButton("Pesquisar");
-		pesquisar.setPreferredSize(new Dimension(side_menu.getWidth(), 70));
-		pesquisar.setBackground(Style.bg);
-		pesquisar.setFocusable(false);
-		pesquisar.setIcon(pesq_icon);
-		//pesquisar.addActionListener(this);
-		pesquisar.addMouseListener(this);
-		pesquisar.setBackground(Style.table_bg);
-		pesquisar.setMnemonic('P');
+		listar_estudante = new JButton("Pesquisar");
+		listar_estudante.setPreferredSize(new Dimension(side_menu.getWidth(), 70));
+		listar_estudante.setBackground(Style.bg);
+		listar_estudante.setFocusable(false);
+		listar_estudante.setIcon(pesq_icon);
+		listar_estudante.addActionListener(this);
+		listar_estudante.addMouseListener(this);
+		listar_estudante.setBackground(Style.table_bg);
+		listar_estudante.setMnemonic('P');
 		
 		//adding panels
 		side_menu.add(ano_panel);
 		side_menu.add(nivel_panel);
-		side_menu.add(pesquisar);
+		side_menu.add(listar_estudante);
 
 		return side_menu;
 	}
@@ -279,12 +281,47 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	
 	//setting the admin menu bar
 	public void set_adm_jmenu_bar(JFrame jf){
+		//=========================Side Bar JMenu==============================
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
+		// side_bar.setIcon(new ImageIcon("./img/"));
+		//=====================================================================
+
+
+
+		//=========================estudante JMenu=============================
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
-		create_jmenu(funcionario, "Funcionario", Style.menu_font, func_JMenuItem, func_items);
-		create_jmenu(conta, "Conta", Style.menu_font, conta_JMenuItem, conta_items);
-		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
+		//=====================================================================
 		
+
+
+		//=========================funcionario JMenu===========================
+		create_jmenu(funcionario, "Funcionario", Style.menu_font, func_JMenuItem, func_items);
+
+		func_JMenuItem[0].setIcon(new ImageIcon("./img/estudante.png"));
+		func_JMenuItem[1].setIcon(new ImageIcon("./img/adicionar-usuario.png"));
+		//======================================================================
+
+
+
+		//========================Conta JMenu===================================
+		create_jmenu(conta, "Conta", Style.menu_font, conta_JMenuItem, conta_items);
+
+		conta_JMenuItem[0].setIcon(new ImageIcon("./img/perfil.png"));
+		conta_JMenuItem[1].setIcon(new ImageIcon("./img/logout.png"));
+		conta_JMenuItem[2].setIcon(new ImageIcon("./img/__sair.png"));
+		//======================================================================
+
+
+
+		//========================Ajuda JMenu===================================
+		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
+
+		ajuda_JMenuItem[0].setIcon(new ImageIcon("./img/__ajuda.png"));
+		ajuda_JMenuItem[1].setIcon(new ImageIcon("./img/ajuda.png"));
+		ajuda_JMenuItem[2].setIcon(new ImageIcon("./img/logout.png"));
+		ajuda_JMenuItem[3].setIcon(new ImageIcon("./img/__sair.png"));
+		//======================================================================
+
 		jf.setJMenuBar(jmenu_bar);
 	}
 
@@ -325,6 +362,13 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			//Adding ActionListeners to all JMenuItems
 			jm_item[i].addActionListener(this);
 			
+			// if(jm.getText().equals(estudante.getText())){
+			// 	jm.setIcon(new ImageIcon("./img/estudante.png"));
+			// 	jm_item[0].setIcon(new ImageIcon());
+			// 	jm_item[1].setIcon(new ImageIcon());
+			// 	jm_item[2].setIcon(new ImageIcon());
+			// 	est_JMenuItem[3].setIcon(new ImageIcon("./img/adicionar-usuario.png"));
+			// }
 		}
 	}
 
@@ -355,6 +399,8 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	ListaNominalEstudante lista_est;
 	Mensalidades mensalidade;
 	Pauta pauta;
+	String[] query_objects = new String[]{"Pauta", "Mensalidade"};
+	String query_object = "";
 	JComponent side = Utilitario.menu_ref;
 
 	CadastrarFuncionario reg_func;
@@ -382,9 +428,9 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		
 		//list added students
 		else if(e.getSource().equals(est_JMenuItem[0])){
-			side = SideMenu_studantes(Style.blue, Style.tf_bg);
+			side = this.sideMenu_studants(Style.blue, Style.tf_bg);
 
-				lista_est = new ListaNominalEstudante();
+				lista_est = new ListaNominalEstudante(est_query);
 				list_status = Login.janela.addConteiner(lista_est, BorderLayout.CENTER, "Lista Nominal De Estudantes");
 
 				lista_est.start_list();
@@ -395,8 +441,9 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		//pauta
 		else if(e.getSource().equals(est_JMenuItem[1])){
 			
-			side = this.SideMenu(Style.blue, Style.tf_bg);
-			
+			side = this.sideMenu(Style.blue, Style.tf_bg);
+			query_object = query_objects[0];
+
 			pauta = new Pauta("SELECT * FROM avaliacao_nivel1", "avaliacao_nivel1");
 				list_status = Login.janela.addConteiner(pauta, BorderLayout.CENTER, "Pauta");
 
@@ -407,14 +454,16 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		//monthly
 		else if(e.getSource().equals(est_JMenuItem[2])){
 			
-			side = Utilitario.menu_ref;
+			side = this.sideMenu(Style.blue, Style.tf_bg);
+			query_object = query_objects[1];
 
-				mensalidade = new Mensalidades();
-				Login.janela.addConteiner(mensalidade, BorderLayout.CENTER, "Controlo de mensalidades");
+		
+			mensalidade = new Mensalidades("SELECT id_estudante, mes, status, divida FROM mensalidade");
+			Login.janela.addConteiner(mensalidade, BorderLayout.CENTER, "Controlo de mensalidades");
 
-				mensalidade.start_table();
-				
-				side_status = -1;
+			mensalidade.start_table();
+			
+			side_status = -1;
 			
 		}
 
@@ -469,7 +518,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 		//help
 		else if(e.getSource().equals(ajuda_JMenuItem[0])){
-			JOptionPane.showMessageDialog(Login.janela, "Esta funcionalidade ainda está em desenvolvimento", "Ajuda", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(Login.janela, "Para ajuda por favor contacte o administrador +258 842 926 333 (Frenque Tovela)\n\nO desenvolvedor: +258 845 220 593 (Fernando Maleiane)", "Ajuda", JOptionPane.INFORMATION_MESSAGE);
 		}
 
 		//about us
@@ -525,24 +574,43 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			}
 
 			else if(!(id_estudante.trim().equals("")) && nivel.equals("")){
-				query = "SELECT * FROM " + __nivel_avaliacao + "id_estudante = ?";
+				query = "SELECT * FROM " + __nivel_avaliacao + " WHERE id_estudante = ?";
 				System.out.println(4);
 
 				// pauta = new Pauta(query, tabela);
 				hasId = false;
 			}
 
-			Login.janela.getContentPane().remove(pauta);
 			
-			if(hasId){
-				pauta = new Pauta(query, tabela, id_estudante);
+			if(query_object.equals(query_objects[0])){
+				Login.janela.getContentPane().remove(pauta);
+
+				if(hasId){
+					pauta = new Pauta(query, tabela, id_estudante);
+				}
+				else {
+					pauta = new Pauta(query, tabela);
+				}
+
+				pauta.start_table();
+				Login.janela.getContentPane().add(pauta, BorderLayout.CENTER);
+
 			}
-			else {
-				pauta = new Pauta(query, tabela);
+			else if(query_object.equals(query_objects[1])){
+				Login.janela.getContentPane().remove(mensalidade);
+				
+				if(hasId){
+					mensalidade = new Mensalidades("SELECT id_estudante, mes, status, divida FROM mensalidade WHERE id_estudante = ?", id_estudante);
+				}
+				else {
+					mensalidade = new Mensalidades("SELECT id_estudante, mes, status, divida FROM mensalidade");
+				}
+
+				mensalidade.start_table();
+				Login.janela.getContentPane().add(mensalidade, BorderLayout.CENTER);
 			}
 
-			pauta.start_table();
-			Login.janela.getContentPane().add(pauta, BorderLayout.CENTER);
+
 			Login.janela.getContentPane().revalidate();
 			Login.janela.getContentPane().repaint();
 		}
@@ -582,6 +650,24 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 			System.out.println(__nivel_avaliacao);
 		}
+		else if(e.getSource().equals(listar_estudante)){
+			if(nivel_combo.getSelectedItem() != nivel_combo.getItemAt(0)){
+				String nivel = nivel_combo.getSelectedItem().toString();
+				System.out.println(nivel);
+				est_query = "SELECT * FROM estudante WHERE nivel = '"+ nivel +"'";
+				
+
+				Login.janela.getContentPane().remove(lista_est);
+
+				lista_est = new ListaNominalEstudante(est_query);
+				lista_est.start_list();
+
+				Login.janela.getContentPane().add(lista_est, BorderLayout.CENTER);
+				Login.janela.getContentPane().revalidate();
+				Login.janela.getContentPane().repaint();
+			}
+			
+		}
 	}
 
 
@@ -593,16 +679,24 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		if(e.getSource().equals(pesquisar)){
-			pesquisar.setIcon(pesq_icon2);
+		if(e.getSource().equals(pesquisar) || e.getSource().equals(listar_estudante)){
+			try{
+				pesquisar.setIcon(pesq_icon2);
+			}catch(NullPointerException ex){
+				listar_estudante.setIcon(pesq_icon2);
+			}
 		}
 	}
 
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if(e.getSource().equals(pesquisar)){
-			pesquisar.setIcon(pesq_icon);
+		if(e.getSource().equals(pesquisar) || e.getSource().equals(listar_estudante)){
+			try{
+				pesquisar.setIcon(pesq_icon);
+			}catch(NullPointerException ex){
+				listar_estudante.setIcon(pesq_icon);
+			}
 		}
 	}
 

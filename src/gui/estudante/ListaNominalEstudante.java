@@ -33,6 +33,9 @@ import gui.Login;
 import gui.util.Style;
 
 public class ListaNominalEstudante extends JPanel  implements ActionListener, MouseListener {
+
+	String __query__ = "";
+
 	//private GridLayout grid21 = new GridLayout(2, 3);
 	private JTable table;
 	private JScrollPane table_scroll;
@@ -49,9 +52,8 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 	
 	public static Integer fill_table_status = -1;
 
-	public ListaNominalEstudante(){
-		
-
+	public ListaNominalEstudante(String query){
+		this.__query__ = query;
 	}
 	
 	public void start_list(){
@@ -59,7 +61,7 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 		this.setLayout(new BorderLayout());
 		this.setBackground(Style.bg);
 
-		this.select_from_database();
+		this.select_from_database(__query__);
 		
 		this.create_table();
 		this.setHeader();
@@ -71,7 +73,7 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 		save.setBackground(Style.btn_bg);
 		save.setForeground(Style.tf_bg);
 		save.setFocusable(false);
-		save.addActionListener(this);
+		save.addActionListener(this);save.setMnemonic('S');
 
 		JPanel footer = new JPanel(Style.flow_center);
 		footer.setBackground(Style.bg);
@@ -157,8 +159,9 @@ public class ListaNominalEstudante extends JPanel  implements ActionListener, Mo
 	}
 
 
-	private void select_from_database(){
-		String query = "SELECT * FROM estudante";
+	private void select_from_database(String query){
+		// String query = "SELECT * FROM estudante";
+		query = __query__;
 		String cout = "SELECT COUNT(id_estudante) FROM estudante";
 			PreparedStatement ps = null;
 			PreparedStatement ps_count = null;

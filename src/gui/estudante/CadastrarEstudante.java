@@ -53,7 +53,7 @@ public class CadastrarEstudante extends JPanel implements ActionListener, MouseL
 	//Items to the forms JLabel
 	String[] form_text = new String[] {"Nome Completo", "Morada", "Bairro", "Email", "Data de nascimento (DD/MM/AAAA)", "Numero de celular    (+258)", "Sexo", "Contacto de emergência", "Nome Completo", "Numero de Celular    (+258)", "nível "};
 	String[] radio_text = new String[] {"M", "F"};
-	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Curso Intensivo", "Inglês para negócios", "Aulas ao domicílio", "Aulas online"};
+	String[] nivel_text = {"A1 (Básico)", "B1 (Intermediário)", "C1 (Avançado)","D1 (Fluente)", "Inglês intensivo", "Inglês para negócios", "Aulas domiciliares", "Aulas online"};
 	LocalTime[] horario = new LocalTime[this.get_time().length];
 	Double[] price = new Double[nivel_text.length];
 	

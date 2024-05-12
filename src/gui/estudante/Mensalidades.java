@@ -25,6 +25,11 @@ import gui.Login;
 import gui.util.Style;
 
 public class Mensalidades  extends JPanel implements ActionListener{
+
+    String __query = "";
+    String __id = "";
+
+
     JPanel footerPanel = new JPanel(Style.flow_center);
     JPanel header, title_panel;
 
@@ -37,8 +42,13 @@ public class Mensalidades  extends JPanel implements ActionListener{
     JScrollPane table_scroll;
     JTableHeader table_header;
 
-    public Mensalidades(){
+    public Mensalidades(String query){
+        this.__query = query;
+    }
 
+    public Mensalidades(String query, String id){
+        this.__query = query;
+        this.__id = id;
     }
 
     public void start_table(){
@@ -47,7 +57,7 @@ public class Mensalidades  extends JPanel implements ActionListener{
         this.setVisible(true);
 
         this.setHeader();
-        this.select_from_database();
+        this.select_from_database(__query);
         this.create_table();
         this.setFooter();
     }
@@ -59,6 +69,7 @@ public class Mensalidades  extends JPanel implements ActionListener{
         pagar.setPreferredSize(new Dimension(300, 50));
         pagar.setFocusable(false);
         pagar.addActionListener(this);
+        pagar.setMnemonic('P');
 
         footerPanel.setPreferredSize(new Dimension(0, 100));
         footerPanel.setBackground(Style.bg);
@@ -132,16 +143,25 @@ public class Mensalidades  extends JPanel implements ActionListener{
         this.add(table_scroll, BorderLayout.CENTER);
     }
 
-    private void select_from_database(){
+    private void select_from_database(String query){
 
-        String query = "SELECT id_estudante, mes, status, divida FROM mensalidade";
+        // String query = "SELECT id_estudante, mes, status, divida FROM mensalidade";
+        query = this.__query;
 		String cout = "SELECT COUNT(id_mensalidade) FROM mensalidade";
 			PreparedStatement ps = null;
 			PreparedStatement ps_count = null;
 
 			try{
 				ps = Conexao.getConexao_ees().prepareStatement(query);
-				ResultSet resultSet = ps.executeQuery(query);
+
+                if(! this.__id.equals("")){
+                    ps.setString(1, __id);
+                    System.out.println("id: " + this.__id);
+                }
+                System.out.println(query);
+                System.out.println("id: " + this.__id);
+
+				ResultSet resultSet = ps.executeQuery();
 
 				ps_count = Conexao.getConexao_ees().prepareStatement(cout);
 				ResultSet resultSet_count = ps_count.executeQuery(cout);
