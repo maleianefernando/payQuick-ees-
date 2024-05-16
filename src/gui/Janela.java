@@ -10,7 +10,7 @@ public class Janela extends JFrame implements Utilitario{
 	//public Menu menu = Utilitario.menu_ref;
 	public Menu menu = new Menu();
 	//public JFrame frame = new JFrame();
-	private String __title = "Emmanuel Enlgish School";
+	private String __title = "Emmanuel English School";
 	
 	public Janela (){
 		
@@ -53,7 +53,7 @@ public class Janela extends JFrame implements Utilitario{
 	public int addConteiner(JComponent panel, String layout, String title){
 		this.getContentPane().removeAll();
 
-		this.setTitle(this.__title + " - " + title);
+		this.setTitle(this.__title + " | " + title);
 		this.getContentPane().add(panel, layout);
 		this.getContentPane().revalidate();
 		this.getContentPane().repaint();

@@ -29,6 +29,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import gui.estudante.CadastrarEstudante;
+import gui.estudante.ContaUser;
 import gui.estudante.ListaNominalEstudante;
 import gui.estudante.Mensalidades;
 import gui.estudante.Pauta;
@@ -87,13 +88,125 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 		botoes(funcionario_cadastrado, "Funcionario Cadastrado", Style.blue, Color.white, Style.ft, this);
 		botoes(cadastrar, "Cadastrar", Style.blue, Color.white, Style.ft, this);
 		botoes(turmas, "Turmas", Style.blue, Color.white, Style.ft, this);
-		
+
 		this.revalidate();
 		this.repaint();
 	}
 
 	String __nivel_avaliacao = "";
 	String __turma = "";
+
+
+	JButton homeButton, contaButton, logoutButton, sairButton;
+
+	private JButton homeButton(JPanel conteiner, Color bg, Color fg){
+
+		homeButton = new JButton("Início");
+		homeButton.setFont(new Font("Consolas", Font.BOLD, 20));
+		homeButton.setForeground(Color.WHITE);
+		homeButton.setOpaque(true);
+		homeButton.setBackground(bg);
+		homeButton.setPreferredSize(new Dimension(conteiner.getWidth(), 75));
+		homeButton.setFocusable(false);
+		homeButton.setFocusPainted(false);
+		homeButton.setIcon(new ImageIcon("./img/home.png"));
+		homeButton.setVerticalTextPosition(JButton.CENTER);
+		homeButton.setHorizontalTextPosition(JButton.RIGHT);
+		homeButton.setHorizontalAlignment(JButton.CENTER);
+		homeButton.setVerticalAlignment(JButton.CENTER);
+		homeButton.addActionListener(this);
+		
+		return homeButton;
+	}
+
+	private JButton contaButton(JPanel conteiner, Color bg, Color fg){
+
+		contaButton = new JButton("Conta ");
+		contaButton.setFont(new Font("Consolas", Font.BOLD, 20));
+		contaButton.setForeground(Color.WHITE);
+		contaButton.setOpaque(true);
+		contaButton.setBackground(bg);
+		contaButton.setPreferredSize(new Dimension(conteiner.getWidth(), 75));
+		contaButton.setFocusable(false);
+		contaButton.setFocusPainted(false);
+		contaButton.setIcon(new ImageIcon("./img/profile.png"));
+		contaButton.setVerticalTextPosition(JButton.CENTER);
+		contaButton.setHorizontalTextPosition(JButton.RIGHT);
+		contaButton.setHorizontalAlignment(JButton.CENTER);
+		contaButton.setVerticalAlignment(JButton.CENTER);
+		contaButton.addActionListener(this);
+		
+		return contaButton;
+	}
+
+	private JButton logoutButton(JPanel conteiner, Color bg, Color fg){
+
+		logoutButton = new JButton("Logout");
+		logoutButton.setFont(new Font("Consolas", Font.BOLD, 20));
+		logoutButton.setForeground(Color.WHITE);
+		logoutButton.setOpaque(true);
+		logoutButton.setBackground(bg);
+		logoutButton.setPreferredSize(new Dimension(conteiner.getWidth(), 75));
+		logoutButton.setFocusable(false);
+		logoutButton.setFocusPainted(false);
+		logoutButton.setIcon(new ImageIcon("./img/logout2.png"));
+		logoutButton.setVerticalTextPosition(JButton.CENTER);
+		logoutButton.setHorizontalTextPosition(JButton.RIGHT);
+		logoutButton.setHorizontalAlignment(JButton.CENTER);
+		logoutButton.setVerticalAlignment(JButton.CENTER);
+		logoutButton.addActionListener(this);
+		
+		return logoutButton;
+	}
+
+	private JButton sairButton(JPanel conteiner, Color bg, Color fg){
+
+		sairButton = new JButton("Sair  ");
+		sairButton.setFont(new Font("Consolas", Font.BOLD, 20));
+		sairButton.setForeground(Color.WHITE);
+		sairButton.setOpaque(true);
+		sairButton.setBackground(bg);
+		sairButton.setPreferredSize(new Dimension(conteiner.getWidth(), 75));
+		sairButton.setFocusable(false);
+		sairButton.setFocusPainted(false);
+		sairButton.setIcon(new ImageIcon("./img/power-button.png"));
+		sairButton.setVerticalTextPosition(JButton.CENTER);
+		sairButton.setHorizontalTextPosition(JButton.RIGHT);
+		sairButton.setHorizontalAlignment(JButton.CENTER);
+		sairButton.setVerticalAlignment(JButton.CENTER);
+		sairButton.addActionListener(this);
+		
+		return sairButton;
+	}
+
+	public JPanel defaultMenuSideBar(Color bg, Color fg){
+		
+		GridLayout __grid = new GridLayout(12, 1, 15, 5);
+		JPanel side_menu = new JPanel(__grid);
+		JPanel title = new JPanel();
+		JPanel homePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+		// side_menu.setLayout(new GridLayout(16, 2));
+		side_menu.setBackground(new Color(0x4ea295));
+		side_menu.setPreferredSize(new Dimension(250, 255));
+		side_menu.setVisible(true);
+
+		homePanel.setBackground(bg);
+		// homePanel.add(homeButton(side_menu, bg, fg));
+		// homePanel.add(contaButton(side_menu, bg, fg));
+
+		// title.setBackground(bg);
+
+		title.setBackground(bg);
+		side_menu.add(title);
+		side_menu.add(homeButton(side_menu, bg, fg));
+		side_menu.add(contaButton(side_menu, bg, fg));
+		side_menu.add(logoutButton(side_menu, bg, fg));
+		side_menu.add(sairButton(side_menu, bg, fg));
+
+		
+		return side_menu;
+	}
 
 	public JPanel sideMenu(Color bg, Color fg){
 
@@ -283,6 +396,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	public void set_adm_jmenu_bar(JFrame jf){
 		//=========================Side Bar JMenu==============================
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
+		side_JMenuItem[0].setIcon(new ImageIcon("./img/menu.png"));
 		// side_bar.setIcon(new ImageIcon("./img/"));
 		//=====================================================================
 
@@ -290,6 +404,10 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 		//=========================estudante JMenu=============================
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
+		est_JMenuItem[0].setIcon(new ImageIcon("./img/lista_estudante.png"));
+		est_JMenuItem[1].setIcon(new ImageIcon("./img/desempenho.png"));
+		est_JMenuItem[2].setIcon(new ImageIcon("./img/visa.png"));
+		est_JMenuItem[3].setIcon(new ImageIcon("./img/cadastrar_est.png"));
 		//=====================================================================
 		
 
@@ -370,6 +488,8 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			// 	est_JMenuItem[3].setIcon(new ImageIcon("./img/adicionar-usuario.png"));
 			// }
 		}
+
+
 	}
 
 	private void logout(){
@@ -392,6 +512,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	int reg_func_status = 0;
 	int list_func_status = 0;
 	int mens_status = 0;
+	int conta_status = 0;
 
 	
 	Login login;
@@ -399,9 +520,12 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 	ListaNominalEstudante lista_est;
 	Mensalidades mensalidade;
 	Pauta pauta;
+	ContaUser contaUser;
 	String[] query_objects = new String[]{"Pauta", "Mensalidade"};
 	String query_object = "";
-	JComponent side = Utilitario.menu_ref;
+	// JComponent side = Utilitario.menu_ref;
+	Color sideBackground = new Color(0x4ea285);
+	JComponent side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
 	CadastrarFuncionario reg_func;
 	ListaNominalFuncionario list_func;
@@ -411,30 +535,24 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 		//manange left side menu
 		if(e.getSource().equals(side_JMenuItem[0])){
-			//side = new Menu();
-			// side = Utilitario.menu_ref;
-			
+
 			if(side_status == -1 || side_status == 0){
 				side_status = Login.janela.addMenuSide(side, BorderLayout.WEST, "Menu");
-				//System.out.println("menu removido,  status: " + side_status);
-				
 			}
 			else{
-				side_status = Login.janela.removeConteiner(Utilitario.menu_ref);
-				//System.out.println("menu adicionado,  status: " + side_status);
-				
+				side_status = Login.janela.removeConteiner(side);
 			}
 		}
 		
 		//list added students
 		else if(e.getSource().equals(est_JMenuItem[0])){
-			side = this.sideMenu_studants(Style.blue, Style.tf_bg);
+				side = this.sideMenu_studants(Style.blue, Style.tf_bg);
 
 				lista_est = new ListaNominalEstudante(est_query);
 				list_status = Login.janela.addConteiner(lista_est, BorderLayout.CENTER, "Lista Nominal De Estudantes");
 
 				lista_est.start_list();
-				side_status = -1;
+				// side_status = -1;
 			
 		}
 		
@@ -448,7 +566,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				list_status = Login.janela.addConteiner(pauta, BorderLayout.CENTER, "Pauta");
 
 				pauta.start_table();
-				side_status = -1;
+				// side_status = -1;
 		}
 
 		//monthly
@@ -463,47 +581,49 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 			mensalidade.start_table();
 			
-			side_status = -1;
+			// side_status = -1;
 			
 		}
 
 		//add students
 		else if(e.getSource().equals(est_JMenuItem[3])){	//Register student
 			
-			side = Utilitario.menu_ref;
+			side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
-				reg_est = new CadastrarEstudante();
-				add_status = Login.janela.addConteiner(reg_est.scroll, BorderLayout.CENTER, "Cadastrar Estudantes");
-				reg_est.start();
+			reg_est = new CadastrarEstudante();
+			add_status = Login.janela.addConteiner(reg_est.scroll, BorderLayout.CENTER, "Cadastrar Estudantes");
+			reg_est.start();
 
-				side_status = -1;
+			// side_status = -1;
 			
 		}
 		else if(e.getSource().equals(func_JMenuItem[0])){	//List registered officers
 
-			side = Utilitario.menu_ref;
+				side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
 				list_func = new ListaNominalFuncionario();
 				list_func_status = Login.janela.addConteiner(list_func, BorderLayout.CENTER, "Listar funcionarios");
-
+				
 				list_func.start_list();
 
-				side_status = -1;
+				// side_status = -1;
 
 		}
 		else if(e.getSource().equals(func_JMenuItem[1])){	//register a offical
 
-			side = Utilitario.menu_ref;
+				side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
 				reg_func = new CadastrarFuncionario();
 				reg_func_status = Login.janela.addConteiner(reg_func, BorderLayout.CENTER, "Registar funcionarios");
-
-				side_status = -1;
-
+				// side_status = -1;
 		}
 		//account details
-		else if(e.getSource().equals(conta_JMenuItem[0])){
+		else if(e.getSource().equals(conta_JMenuItem[0]) || e.getSource().equals(contaButton)){
+			System.out.println("detalhes da conta");
+			side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
+			contaUser = new ContaUser();
+			conta_status = Login.janela.addConteiner(contaUser, BorderLayout.CENTER, "Detalhes da conta");
 		}
 
 		//logout
@@ -526,16 +646,22 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			JOptionPane.showMessageDialog(Login.janela, "Somos a Emmanuel English School, uma escola especializada em ensinar a lingua inglesa atravês de métodos funcionais e eficazes", "Quem Somos Nós?", JOptionPane.INFORMATION_MESSAGE);
 		}
 
-		else if(e.getSource().equals(ajuda_JMenuItem[2])){	//Logout button - JMenuItem
+		else if(e.getSource().equals(ajuda_JMenuItem[2]) || e.getSource().equals(logoutButton)){	//Logout button - JMenuItem
 
 			this.logout();
 		}
 		
-		else if(e.getSource().equals(ajuda_JMenuItem[3])){	//Exit button - JMenuItem
+		else if(e.getSource().equals(ajuda_JMenuItem[3]) || e.getSource().equals(sairButton)){	//Exit button - JMenuItem
 			this.exit();
 		}
-		
+		else if(e.getSource().equals(homeButton)){
+			Login.janela.getContentPane().removeAll();
 
+			if(side_status == 1){
+				side_status = Login.janela.addMenuSide(side, BorderLayout.WEST, "Menu");
+			}
+		}
+		
 
 		////////
 		else if(e.getSource().equals(pesquisar)){
@@ -667,6 +793,10 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				Login.janela.getContentPane().repaint();
 			}
 			
+		}
+
+		if(side_status == 1){
+			side_status = Login.janela.addMenuSide(side, BorderLayout.WEST, "Menu");
 		}
 	}
 
