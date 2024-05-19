@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.BorderLayout;
+
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -13,7 +15,9 @@ public class Janela extends JFrame implements Utilitario{
 	private String __title = "Emmanuel English School";
 	
 	public Janela (){
-		
+
+		this.revalidate();
+		this.repaint();
 	}
 	
 	public void start(String user){
@@ -32,8 +36,9 @@ public class Janela extends JFrame implements Utilitario{
 			this.setMenu();
 			
 		}
-		//this.addMenuSide();
-		System.out.println("Start");
+
+		this.add(menu.setNorthPanel(), BorderLayout.NORTH);
+		this.getContentPane().add(menu.setHomeBackground(), BorderLayout.CENTER);
 	}
 
 	public void setAdmMenu(){
@@ -45,16 +50,17 @@ public class Janela extends JFrame implements Utilitario{
 
 	public void setMenu(){
 		menu.set_jmenu_bar(this);
-		
+
 		this.revalidate();
 		this.repaint();
 	}
 
 	public int addConteiner(JComponent panel, String layout, String title){
 		this.getContentPane().removeAll();
-
+		
 		this.setTitle(this.__title + " | " + title);
 		this.getContentPane().add(panel, layout);
+		this.add(menu.setNorthPanel(), BorderLayout.NORTH);
 		this.getContentPane().revalidate();
 		this.getContentPane().repaint();
 		
