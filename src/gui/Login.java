@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import connection.Conexao;
+import gui.util.AtualUser;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -62,7 +63,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 		ImageIcon icon = new ImageIcon("./img/tr.jpg");
 	
 	
-		this.setTitle("Login");
+		this.setTitle("Emmanuel English School | Login");
 		this.setSize(1050, 550);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(false);
@@ -185,6 +186,7 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 	}
 	
 	public static Janela janela;
+	public static AtualUser atualUser;
 	int tentativas = 3;	
 	int i = 1;
 	private void login(String nome, String senha){
@@ -213,6 +215,9 @@ public class Login extends JFrame implements MouseListener, KeyListener{
 				// System.out.println(resultSet.getString("senha"));
 
 				if ((resultSet.getString("id_utilizador").equals(nome) || resultSet.getString("nome").equals(nome)) && resultSet.getString("senha").equals(senha)) {
+
+					atualUser = new AtualUser(resultSet.getString("nome"), resultSet.getString("id_utilizador"), resultSet.getString("senha"), resultSet.getString("funcao"));
+					
 					this.dispose();
 					janela = new Janela();
 					janela.start(resultSet.getString("funcao"));	

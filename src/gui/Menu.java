@@ -29,11 +29,11 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 import gui.estudante.CadastrarEstudante;
-import gui.estudante.ContaUser;
 import gui.estudante.ListaNominalEstudante;
 import gui.estudante.Mensalidades;
 import gui.estudante.Pauta;
 import gui.funcionario.CadastrarFuncionario;
+import gui.funcionario.ContaUser;
 import gui.funcionario.ListaNominalFuncionario;
 import gui.util.Style;
 import xutil.Utilitario;
@@ -541,7 +541,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 		JPanel homeBackgroundPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-		JLabel homeBackgroundLabel = new JLabel("the emmanuel english school".toUpperCase());
+		JLabel homeBackgroundLabel = new JLabel();
 
 		homeBackgroundLabel.setIcon(new ImageIcon(background.getImage()));
 		homeBackgroundLabel.setFont(new Font("Mv Boli", Font.BOLD, 40));
