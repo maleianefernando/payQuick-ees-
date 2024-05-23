@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import connection.Conexao;
@@ -23,6 +24,9 @@ import gui.Login;
 import gui.util.Style;
 
 public class CadastrarFuncionario extends JPanel implements ActionListener{
+
+    public JScrollPane scrollPane;
+
     JPanel panels[];
     JPanel title_panel = new JPanel(Style.flow_center);
     JLabel labels[];
@@ -63,6 +67,8 @@ public class CadastrarFuncionario extends JPanel implements ActionListener{
         JPanel footer = new JPanel();
         footer.setBackground(Style.tf_fg);
         //this.add(footer);
+
+        scrollPane = new JScrollPane(this);
     }
 
 

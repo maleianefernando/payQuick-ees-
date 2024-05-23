@@ -666,7 +666,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 				side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
 				reg_func = new CadastrarFuncionario();
-				reg_func_status = Login.janela.addConteiner(reg_func, BorderLayout.CENTER, "Registar funcionarios");
+				reg_func_status = Login.janela.addConteiner(reg_func.scrollPane, BorderLayout.CENTER, "Registar funcionarios");
 				// side_status = -1;
 		}
 		//account details
@@ -675,7 +675,7 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 			side = this.defaultMenuSideBar(sideBackground, Style.tf_bg);
 
 			contaUser = new ContaUser();
-			conta_status = Login.janela.addConteiner(contaUser, BorderLayout.CENTER, "Detalhes da conta");
+			conta_status = Login.janela.addConteiner(contaUser.scrollPane, BorderLayout.CENTER, "Detalhes da conta");
 		}
 
 		//logout

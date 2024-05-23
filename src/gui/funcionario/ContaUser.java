@@ -16,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import connection.Conexao;
@@ -24,6 +25,8 @@ import gui.util.Style;
 
 public class ContaUser extends JPanel implements ActionListener{
     
+    public JScrollPane scrollPane;
+
     String name, newPasword, id, position;
     
     JPanel headerPanel, footerPanel, centerPanel;
@@ -44,6 +47,8 @@ public class ContaUser extends JPanel implements ActionListener{
         this.add(this.setHeader(), BorderLayout.NORTH);
         this.add(this.setCenterPanel(labelFont, textFieldFont), BorderLayout.CENTER);
         this.add(this.setFooter(), BorderLayout.SOUTH);
+
+        scrollPane = new JScrollPane(this);
     }
 
     private void setPanel(){

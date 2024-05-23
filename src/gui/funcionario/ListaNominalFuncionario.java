@@ -150,7 +150,7 @@ public class ListaNominalFuncionario extends JPanel{
 				ps = Conexao.getConexao_ees().prepareStatement(sql);
 				ResultSet resultSet = ps.executeQuery(sql);
 
-				ps_count = Conexao.getConexao().prepareStatement(cout);
+				ps_count = Conexao.getConexao_ees().prepareStatement(cout);
 				ResultSet resultSet_count = ps_count.executeQuery(cout);
 				
 				try {
