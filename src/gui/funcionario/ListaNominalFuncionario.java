@@ -63,7 +63,7 @@ public class ListaNominalFuncionario extends JPanel{
         header = new JPanel(new GridLayout(3, 3));
         header.setBackground(Style.bg);
 
-        title = new JLabel("Lista Nominal De Funcionarios".toUpperCase());
+        title = new JLabel("Funcionarios".toUpperCase());
         title.setFont(new Font("Consolas", Font.BOLD, 30));
         title.setForeground(new Color(0x039e18));
 
