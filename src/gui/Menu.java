@@ -479,10 +479,39 @@ public class Menu extends JPanel implements ActionListener, MouseListener, Utili
 
 	//setting the menu bar
 	public void set_jmenu_bar(JFrame jf){
+		//=========================Side Bar JMenu==============================
 		create_jmenu(side_bar, "Menu", Style.menu_font, side_JMenuItem, side_bar_items);
+		side_JMenuItem[0].setIcon(new ImageIcon("./img/menu.png"));
+		// side_bar.setIcon(new ImageIcon("./img/"));
+		//=====================================================================
+
+
+		//=========================estudante JMenu=============================
 		create_jmenu(estudante, "Estudante", Style.menu_font, est_JMenuItem, est_items);
+		est_JMenuItem[0].setIcon(new ImageIcon("./img/lista_estudante.png"));
+		est_JMenuItem[1].setIcon(new ImageIcon("./img/desempenho.png"));
+		est_JMenuItem[2].setIcon(new ImageIcon("./img/visa.png"));
+		est_JMenuItem[3].setIcon(new ImageIcon("./img/cadastrar_est.png"));
+		//=====================================================================
+
+
+		//========================Conta JMenu===================================
 		create_jmenu(conta, "Conta", Style.menu_font, conta_JMenuItem, conta_items);
+
+		conta_JMenuItem[0].setIcon(new ImageIcon("./img/perfil.png"));
+		conta_JMenuItem[1].setIcon(new ImageIcon("./img/logout.png"));
+		conta_JMenuItem[2].setIcon(new ImageIcon("./img/__sair.png"));
+		//======================================================================
+
+
+		//========================Ajuda JMenu===================================
 		create_jmenu(ajuda, "Ajuda", Style.menu_font, ajuda_JMenuItem, ajuda_items);
+
+		ajuda_JMenuItem[0].setIcon(new ImageIcon("./img/__ajuda.png"));
+		ajuda_JMenuItem[1].setIcon(new ImageIcon("./img/ajuda.png"));
+		ajuda_JMenuItem[2].setIcon(new ImageIcon("./img/logout.png"));
+		ajuda_JMenuItem[3].setIcon(new ImageIcon("./img/__sair.png"));
+		//======================================================================
 		
 		jf.setJMenuBar(jmenu_bar);
 	}
